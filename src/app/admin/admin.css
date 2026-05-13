@@ -46,26 +46,37 @@
   .admin-sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
-.admin-brand {
+.admin-brand-row {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 0 20px 14px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 14px;
   border-bottom: 1px solid var(--line);
 }
-.admin-brand .mono {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--gold);
-  letter-spacing: 0.02em;
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
-.admin-brand .brand-sub {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--fg-3);
-  text-transform: uppercase;
+/* Sidebar logo respects the current theme via the Logo component (which
+   swaps between logo white.png / logo2.png based on theme name). */
+.admin-brand img { display: block; }
+
+.admin-theme-toggle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: color .12s ease, border-color .12s ease, background .12s ease;
+}
+.admin-theme-toggle:hover {
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 .admin-nav { display: flex; flex-direction: column; padding: 0 12px; }
@@ -366,7 +377,17 @@
 }
 .admin-table tr:last-child td { border-bottom: 0; }
 .admin-table-logo img { max-height: 28px; max-width: 80px; opacity: 0.85; }
-.admin-table-actions { text-align: right; display: flex; gap: 6px; justify-content: flex-end; }
+/* Action cell: keep display:table-cell (the default for td) so the table
+   layout engine can size the column properly. Using display:flex on a td
+   makes it lose table-cell behaviour and causes the right edge to wobble
+   between rows. */
+.admin-table-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+.admin-table-actions > * + * {
+  margin-left: 6px;
+}
 .admin-table-empty {
   text-align: center;
   padding: 40px;
@@ -709,4 +730,700 @@
 @keyframes admin-toast-in {
   from { opacity: 0; transform: translateX(20px); }
   to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================================================
+   Trash — soft-delete table with retention countdown.
+   ============================================================================ */
+.trash-kind {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.trash-remaining {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  color: var(--fg-2);
+}
+.trash-remaining.is-soon { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+.trash-remaining.is-urgent { color: #E2664B; border-color: color-mix(in srgb, #E2664B 50%, transparent); }
+
+/* ============================================================================
+   Fleet unified module — two-pane layout: category rail + collapsible tree.
+   ============================================================================ */
+
+.admin-fleet-shell {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  min-height: calc(100vh - 140px);
+}
+@media (max-width: 900px) {
+  .admin-fleet-shell { grid-template-columns: 1fr; }
+}
+
+/* ----- Left rail ----- */
+.admin-fleet-rail {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 32px);
+}
+.admin-fleet-rail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-fleet-rail-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.admin-fleet-rail-count {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  background: var(--bg-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  border-radius: 999px;
+}
+.admin-fleet-link-btn {
+  background: transparent;
+  border: 0;
+  color: var(--gold);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.admin-fleet-link-btn:hover { color: var(--gold-2); }
+
+.admin-fleet-rail-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-fleet-rail-card {
+  display: flex;
+  align-items: stretch;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  position: relative;
+  color: var(--fg);
+  transition: background .12s ease, border-color .12s ease;
+}
+.admin-fleet-rail-card:hover {
+  background: var(--bg-3);
+  border-color: var(--line);
+}
+.admin-fleet-rail-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 12px 14px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  min-width: 0;
+}
+.admin-fleet-rail-card-toggle {
+  display: flex;
+  align-items: center;
+  padding: 0 14px 0 6px;
+}
+.admin-fleet-rail-card.is-draft .admin-fleet-rail-card-body { opacity: 0.55; }
+.admin-fleet-rail-card.is-active {
+  background: var(--bg-3);
+  border-color: var(--line-strong);
+  border-left-color: var(--gold);
+}
+.admin-fleet-rail-card-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+.admin-fleet-rail-card-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.admin-fleet-rail-card.is-active svg {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ----- Main panel ----- */
+.admin-fleet-main {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  min-height: 400px;
+}
+.admin-fleet-main-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-fleet-main-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-fleet-main-title h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+.admin-fleet-main-sub {
+  color: var(--fg-3);
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+.admin-fleet-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+}
+.admin-fleet-main-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-fleet-main-actions .admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ----- Table (subcategory rows + nested item rows) ----- */
+.admin-fleet-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+/* Action cluster sits in a fixed-width column so 2-button (item) and
+   3-button (subcategory) rows share the same right edge — keeps the
+   right rail visually straight. */
+.admin-fleet-table .admin-table-actions {
+  padding-right: 18px;
+}
+.admin-fleet-table th,
+.admin-fleet-table td {
+  text-align: left;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.admin-fleet-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  background: var(--bg-3);
+}
+.admin-fleet-table tr:last-child td { border-bottom: 0; }
+
+.admin-fleet-row.is-open { background: var(--bg-3); }
+
+.admin-fleet-row-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-fleet-toggle {
+  background: transparent;
+  border: 0;
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
+.admin-fleet-row-count {
+  margin-left: 6px;
+  padding: 1px 8px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-3);
+  border-radius: 999px;
+}
+.admin-fleet-row.is-open .admin-fleet-row-count {
+  background: var(--bg-2);
+}
+
+/* nested item rows */
+.admin-fleet-item-row td {
+  background: var(--bg);
+  padding: 10px 22px 10px 56px;
+}
+.admin-fleet-item-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* iOS-style publish toggle that replaces the static dot. Gold = live,
+   muted grey = hidden from the public site. */
+.admin-fleet-publish-toggle {
+  position: relative;
+  width: 34px;
+  height: 18px;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-3);
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.admin-fleet-publish-toggle:hover { border-color: var(--gold); }
+.admin-fleet-publish-toggle.is-on {
+  background: #2E8B57;
+  border-color: #2E8B57;
+}
+.admin-fleet-publish-knob {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--fg-2);
+  transition: transform .18s ease, background .15s ease;
+}
+.admin-fleet-publish-toggle.is-on .admin-fleet-publish-knob {
+  transform: translateX(16px);
+  background: #FFFFFF;
+}
+.admin-fleet-item-thumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+}
+.admin-fleet-item-info { display: flex; flex-direction: column; gap: 2px; }
+.admin-fleet-item-name { font-size: 13px; }
+.admin-fleet-item-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.admin-fleet-item-empty {
+  text-align: center;
+  color: var(--fg-3);
+  font-size: 12px;
+  padding: 14px 22px 14px 56px;
+}
+
+.admin-fleet-foot {
+  padding: 12px 22px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ----- Icon button (compact 28×28 with subtle hover) ----- */
+.admin-icon-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease, border-color .12s ease;
+}
+.admin-icon-btn:hover {
+  color: var(--fg);
+  background: var(--bg-3);
+  border-color: var(--line);
+}
+.admin-icon-btn.is-primary { color: var(--gold); }
+.admin-icon-btn.is-primary:hover { color: var(--gold-2); border-color: var(--gold); }
+.admin-icon-btn.is-danger:hover { color: #E2664B; border-color: #E2664B; }
+
+/* ============================================================================
+   Modal — used for fleet inline create/edit.
+   ============================================================================ */
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 16px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.admin-modal {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.6);
+  animation: admin-modal-in .2s ease-out;
+}
+.admin-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-modal-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+.admin-modal-close {
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.admin-modal-close:hover { color: var(--fg); }
+.admin-modal-body { padding: 22px; }
+@keyframes admin-modal-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================================
+   Dashboard — hero KPIs, trend, recent submissions feed, quick actions, system.
+   ============================================================================ */
+
+.dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .dash-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.dash-kpi {
+  display: block;
+  padding: 22px 22px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--fg);
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.dash-kpi:hover { border-color: var(--line-strong); background: var(--bg-3); }
+.dash-kpi.is-gold { border-color: var(--gold); border-left-width: 3px; }
+.dash-kpi-value {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.dash-kpi.is-gold .dash-kpi-value { color: var(--gold); }
+.dash-kpi-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-top: 10px;
+}
+.dash-kpi-hint {
+  font-size: 12px;
+  color: var(--fg-3);
+  margin-top: 6px;
+}
+
+/* -- Panels (shared shell) -- */
+.dash-panel {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.dash-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--line);
+}
+.dash-panel-head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.dash-panel-sub {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+/* -- Trend chart -- */
+.dash-segmented {
+  display: inline-flex;
+  border: 1px solid var(--line);
+}
+.dash-seg {
+  padding: 6px 12px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.dash-seg:hover { color: var(--fg); }
+.dash-seg.is-active {
+  background: var(--bg-3);
+  color: var(--gold);
+}
+.dash-seg + .dash-seg { border-left: 1px solid var(--line); }
+
+.dash-trend {
+  padding: 18px 22px 0;
+  color: var(--fg-3);
+}
+.dash-trend-svg {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+.dash-bar-contact { fill: var(--gold); }
+.dash-bar-quote   { fill: var(--fg-2); fill-opacity: 0.55; }
+.dash-bar-label {
+  fill: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+.dash-trend-legend {
+  display: flex;
+  gap: 22px;
+  padding: 12px 22px 18px;
+  font-size: 11px;
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.dash-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+.dash-dot-contact { background: var(--gold); }
+.dash-dot-quote   { background: var(--fg-2); opacity: 0.55; }
+
+/* -- 2-column body -- */
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .dash-grid { grid-template-columns: 1fr; }
+}
+.dash-side > .dash-panel:last-child { margin-bottom: 0; }
+
+/* -- Recent submissions feed -- */
+.dash-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dash-feed-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  text-decoration: none;
+  transition: background .12s ease;
+}
+.dash-feed-row:hover { background: var(--bg-3); }
+.dash-feed li:last-child .dash-feed-row { border-bottom: 0; }
+.dash-feed-kind {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 28px;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg-3);
+  background: var(--bg-3);
+}
+.dash-feed-kind-quote {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.dash-feed-body { min-width: 0; }
+.dash-feed-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.dash-feed-line strong {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dash-feed-phone {
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.dash-feed-sub {
+  font-size: 12px;
+  color: var(--fg-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.dash-feed-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+.dash-feed-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+}
+
+/* status pills (reused below feed) */
+.dash-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+}
+.dash-status-new {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 50%, transparent);
+}
+.dash-status-seen { color: var(--fg-2); border-color: var(--line-strong); }
+.dash-status-replied { color: #7FB069; border-color: color-mix(in srgb, #7FB069 50%, transparent); }
+.dash-status-spam { color: #E2664B; border-color: color-mix(in srgb, #E2664B 50%, transparent); }
+
+/* -- Quick actions -- */
+.dash-quick {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 14px 18px 18px;
+}
+.dash-quick-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 12px;
+  transition: border-color .12s ease, color .12s ease;
+}
+.dash-quick-btn:hover { border-color: var(--gold); color: var(--gold); }
+.dash-quick-plus {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* -- System rows -- */
+.dash-system { padding: 8px 22px 18px; }
+.dash-kv {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 13px;
+}
+.dash-kv:last-child { border-bottom: 0; }
+.dash-kv-k {
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.dash-kv-v {
+  font-weight: 600;
 }

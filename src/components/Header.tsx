@@ -1,20 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useLocale } from 'next-intl';
 import { Icon } from './icons';
 import { useLang } from '@/lib/lang';
 import { useTheme } from '@/contexts/ThemeContext';
 import { TRANSLATIONS, type Lang } from '@/lib/translations';
 
-export function Logo({ size = 44 }: { size?: number }) {
+export function Logo({ size = 44, priority = false }: { size?: number; priority?: boolean }) {
   const { theme } = useTheme();
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={theme === 'light' ? '/assets/logo white.png' : '/assets/logo2.png'}
       alt="Construction Equipment Services"
       width={size}
       height={size}
+      priority={priority}
       style={{ width: size, height: size, objectFit: 'contain', display: 'block' }}
     />
   );
@@ -76,6 +78,7 @@ export function TopBar() {
 
 export function Nav() {
   const { lang } = useLang();
+  const locale = useLocale();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const t = TRANSLATIONS[lang];
@@ -87,13 +90,17 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const links = [
-    { id: 'fleet', label: t.nav_fleet },
-    { id: 'services', label: t.nav_services },
-    { id: 'how', label: t.nav_how },
-    { id: 'projects', label: t.nav_projects },
-    { id: 'faq', label: t.nav_faq },
-    { id: 'contact', label: t.nav_contact },
+  // Anchor links use a locale-prefixed path so they keep working from any
+  // future non-home route — landing on /az/#fleet always scrolls correctly.
+  const anchor = (id: string) => `/${locale}#${id}`;
+
+  const links: { href: string; label: string }[] = [
+    { href: anchor('fleet'),    label: t.nav_fleet },
+    { href: anchor('services'), label: t.nav_services },
+    { href: anchor('how'),      label: t.nav_how },
+    { href: anchor('projects'), label: t.nav_projects },
+    { href: anchor('faq'),      label: t.nav_faq },
+    { href: anchor('contact'),  label: t.nav_contact },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -103,15 +110,15 @@ export function Nav() {
       className={`nav ${isMenuOpen ? 'menu-open' : ''} ${scrolled ? 'scrolled' : ''}`}
     >
       <div className="container nav-inner">
-        <a href="#" className="nav-logo" onClick={closeMenu}>
+        <a href={`/${locale}`} className="nav-logo" onClick={closeMenu}>
           <span className="nav-logo-wrap">
-            <Logo size={96} />
+            <Logo size={96} priority />
           </span>
         </a>
 
         <nav className="nav-links">
           {links.map((l) => (
-            <a key={l.id} href={`#${l.id}`}>
+            <a key={l.href} href={l.href}>
               {l.label}
             </a>
           ))}
@@ -119,7 +126,7 @@ export function Nav() {
 
         <div className="nav-cta">
           <a
-            href="#contact"
+            href={anchor('contact')}
             className="btn btn-ghost hide-mobile"
             style={{ padding: '10px 16px', fontSize: 12 }}
           >
@@ -146,7 +153,7 @@ export function Nav() {
       <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-links">
           {links.map((l, i) => (
-            <a key={l.id} href={`#${l.id}`} onClick={closeMenu}>
+            <a key={l.href} href={l.href} onClick={closeMenu}>
               <span className="num">0{i + 1}</span>
               <span className="lbl">{l.label}</span>
               <Icon name="arrow-right" size={20} />

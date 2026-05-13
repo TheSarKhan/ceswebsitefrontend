@@ -21,6 +21,7 @@ export type FleetItemTranslation = {
 export type FleetSubcategoryBrief = {
   slug: string;
   sortOrder: number;
+  itemCount: number;
   translations: I18n<FleetSubcategoryTranslation>;
 };
 
@@ -28,6 +29,7 @@ export type FleetCategoryDto = {
   slug: string;
   icon?: string | null;
   sortOrder: number;
+  isPublished: boolean;
   translations: I18n<FleetCategoryTranslation>;
   subcategories: FleetSubcategoryBrief[];
 };
@@ -39,6 +41,7 @@ export type FleetItemCard = {
   price?: string | null;
   priceUnit?: string | null;
   sortOrder: number;
+  isPublished: boolean;
   translations: I18n<FleetItemTranslation>;
 };
 
@@ -54,6 +57,7 @@ export type FleetItemDto = {
   price?: string | null;
   priceUnit?: string | null;
   sortOrder: number;
+  isPublished: boolean;
   translations: I18n<FleetItemTranslation>;
   specs: SpecEntry[];
   subcategory: FleetSubcategoryBrief;
@@ -63,6 +67,7 @@ export type FleetItemDto = {
 export type FleetSubcategoryDto = {
   slug: string;
   sortOrder: number;
+  isPublished: boolean;
   translations: I18n<FleetSubcategoryTranslation>;
   category: FleetSubcategoryBrief;
   items: FleetItemCard[];
@@ -125,6 +130,54 @@ export type ClientDto = {
   logo: string;
   url?: string | null;
   sortOrder: number;
+};
+
+// ============================================================================
+// Dashboard stats
+// ============================================================================
+
+export type DashboardStats = {
+  totals: {
+    fleetItems: number;
+    fleetSubcategories: number;
+    fleetCategories: number;
+    projects: number;
+    offerings: number;
+    testimonials: number;
+    faqs: number;
+    clients: number;
+  };
+  submissions: {
+    contact: SubmissionBreakdown;
+    quote: SubmissionBreakdown;
+  };
+  trend: TrendPoint[];
+  recent: RecentSubmission[];
+  storage: {
+    mode: 'local' | 's3';
+    fileCount: number;
+    totalBytes: number;
+  };
+};
+
+export type SubmissionBreakdown = {
+  total: number;
+  newCount: number;
+  seen: number;
+  replied: number;
+  spam: number;
+};
+
+export type TrendPoint = { day: string; contact: number; quote: number };
+
+export type RecentSubmission = {
+  id: number;
+  kind: 'contact' | 'quote';
+  name: string;
+  phone: string;
+  summary: string;
+  status: 'NEW' | 'SEEN' | 'REPLIED' | 'SPAM' | null;
+  createdAt: string;
 };
 
 // ============================================================================

@@ -6,10 +6,14 @@ import { pickTr } from '@/lib/types';
 import { TRANSLATIONS } from '@/lib/translations';
 import { Reveal, StaggerGroup, StaggerItem } from './motion';
 
-export function FAQ() {
+export function FAQ({
+  initialFaqs,
+}: {
+  initialFaqs?: import('@/lib/types').FaqDto[];
+} = {}) {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
-  const { data, isError } = useFaqs();
+  const { data, isError } = useFaqs(initialFaqs);
   const faqs = isError ? [] : (data ?? []);
 
   return (

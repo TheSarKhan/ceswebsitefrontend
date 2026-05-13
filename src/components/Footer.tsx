@@ -1,12 +1,15 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { Logo } from './Header';
 import { useLang } from '@/lib/lang';
 import { TRANSLATIONS } from '@/lib/translations';
 
 export function Footer() {
   const { lang } = useLang();
+  const locale = useLocale();
   const t = TRANSLATIONS[lang];
+  const anchor = (id: string) => `/${locale}#${id}`;
   return (
     <>
       <div className="megamark">
@@ -19,26 +22,25 @@ export function Footer() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <a href="#" className="nav-logo">
+              <a href={`/${locale}`} className="nav-logo">
                 <Logo size={120} />
               </a>
               <p>{t.footer_about}</p>
             </div>
             <div className="footer-col">
               <h5>{lang === 'AZ' ? 'Xidmətlər' : lang === 'RU' ? 'Услуги' : 'Services'}</h5>
-              <a href="#fleet">{lang === 'AZ' ? 'Avtokran' : lang === 'RU' ? 'Автокран' : 'Mobile Crane'}</a>
-              <a href="#fleet">{lang === 'AZ' ? 'Forklift' : lang === 'RU' ? 'Погрузчик' : 'Forklift'}</a>
-              <a href="#fleet">{lang === 'AZ' ? 'Səbət' : lang === 'RU' ? 'Вышка' : 'Aerial Lift'}</a>
-              <a href="#fleet">{lang === 'AZ' ? 'Ekskavator' : lang === 'RU' ? 'Экскаватор' : 'Excavator'}</a>
-              <a href="#fleet">{lang === 'AZ' ? 'Buldozer' : lang === 'RU' ? 'Бульдозер' : 'Bulldozer'}</a>
+              <a href={anchor('fleet')}>{lang === 'AZ' ? 'Avtokran' : lang === 'RU' ? 'Автокран' : 'Mobile Crane'}</a>
+              <a href={anchor('fleet')}>{lang === 'AZ' ? 'Forklift' : lang === 'RU' ? 'Погрузчик' : 'Forklift'}</a>
+              <a href={anchor('fleet')}>{lang === 'AZ' ? 'Səbət' : lang === 'RU' ? 'Вышка' : 'Aerial Lift'}</a>
+              <a href={anchor('fleet')}>{lang === 'AZ' ? 'Ekskavator' : lang === 'RU' ? 'Экскаватор' : 'Excavator'}</a>
+              <a href={anchor('fleet')}>{lang === 'AZ' ? 'Buldozer' : lang === 'RU' ? 'Бульдозер' : 'Bulldozer'}</a>
             </div>
             <div className="footer-col">
               <h5>{t.footer_links}</h5>
-              <a href="#">{lang === 'AZ' ? 'Haqqımızda' : lang === 'RU' ? 'О нас' : 'About Us'}</a>
-              <a href="#projects">{t.nav_projects}</a>
-              <a href="#">{lang === 'AZ' ? 'Karyera' : lang === 'RU' ? 'Карьера' : 'Career'}</a>
-              <a href="#">{lang === 'AZ' ? 'Yeniliklər' : lang === 'RU' ? 'Новости' : 'News'}</a>
-              <a href="#contact">{t.nav_contact}</a>
+              <a href={anchor('services')}>{t.nav_services}</a>
+              <a href={anchor('projects')}>{t.nav_projects}</a>
+              <a href={anchor('faq')}>{t.nav_faq}</a>
+              <a href={anchor('contact')}>{t.nav_contact}</a>
             </div>
             <div className="footer-col">
               <h5>{t.footer_contact}</h5>

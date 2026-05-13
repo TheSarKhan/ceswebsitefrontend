@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import { useFleetCategories, useFleetSubcategory } from '@/lib/hooks';
 import { pickTr, type FleetItemCard } from '@/lib/types';
 import { useLang } from '@/lib/lang';
@@ -21,35 +22,56 @@ function formatUnit(unit: string | null | undefined, lang: Lang) {
   return UNIT_LABELS[unit]?.[lang] ?? unit;
 }
 
-export function Fleet() {
+export function Fleet({
+  initialCategories,
+}: {
+  initialCategories?: import('@/lib/types').FleetCategoryDto[];
+} = {}) {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
-  const { data, isError } = useFleetCategories();
-  const categories = useMemo(() => (isError ? [] : (data ?? [])), [data, isError]);
+  const { data, isError } = useFleetCategories(initialCategories);
+  // Visitors only see categories that actually have published items —
+  // an empty crane category is just confusion in the navigation.
+  const categories = useMemo(() => {
+    if (isError || !data) return [];
+    return data.filter((c) =>
+      c.subcategories.some((s) => (s.itemCount ?? 0) > 0),
+    );
+  }, [data, isError]);
 
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [activeSub, setActiveSub] = useState<string | null>(null);
 
-  // Default to the first category once data arrives.
+  // Prefer the first category that actually has published content, falling
+  // back to the first category overall — otherwise the user lands on an empty
+  // tab even when other categories have items.
   useEffect(() => {
-    if (!activeCat && categories.length > 0) {
-      setActiveCat(categories[0].slug);
-    }
+    if (activeCat || categories.length === 0) return;
+    const withContent = categories.find((c) =>
+      c.subcategories.some((s) => (s.itemCount ?? 0) > 0),
+    );
+    setActiveCat((withContent ?? categories[0]).slug);
   }, [categories, activeCat]);
 
-  // Whenever the active category changes (or finishes loading), make sure the
-  // active subcategory belongs to it — otherwise reset to the first one.
+  // Whenever the active category changes, pick the first subcategory that has
+  // items; if none do, just pick the first subcategory so the user still sees
+  // a labelled empty state.
   useEffect(() => {
     const cat = categories.find((c) => c.slug === activeCat);
     if (!cat) return;
     const subBelongs = cat.subcategories.some((s) => s.slug === activeSub);
     if (!subBelongs) {
-      setActiveSub(cat.subcategories[0]?.slug ?? null);
+      const withItems = cat.subcategories.find((s) => (s.itemCount ?? 0) > 0);
+      setActiveSub((withItems ?? cat.subcategories[0])?.slug ?? null);
     }
   }, [categories, activeCat, activeSub]);
 
   const activeCategory = categories.find((c) => c.slug === activeCat);
-  const subcategories = activeCategory?.subcategories ?? [];
+  // Hide subcategories that have no published items — visitors should never
+  // click into an empty section. Admins can still see them in /admin/fleet.
+  const subcategories = (activeCategory?.subcategories ?? []).filter(
+    (s) => (s.itemCount ?? 0) > 0,
+  );
 
   const { data: subDetail } = useFleetSubcategory(activeSub);
   const items = subDetail?.items ?? [];
@@ -63,11 +85,6 @@ export function Fleet() {
             <br />
             <span className="stroke">{t.fleet_h2}</span>
           </h2>
-          <div className="meta">
-            {t.fleet_meta}
-            <br />
-            {t.fleet_location}
-          </div>
         </Reveal>
 
         {/* Tier 1 — categories */}
@@ -75,6 +92,10 @@ export function Fleet() {
           {categories.map((c) => {
             const tr = pickTr(c.translations, lang);
             const isActive = activeCat === c.slug;
+            const total = c.subcategories.reduce(
+              (sum, s) => sum + (s.itemCount ?? 0),
+              0,
+            );
             return (
               <button
                 key={c.slug}
@@ -82,7 +103,7 @@ export function Fleet() {
                 onClick={() => setActiveCat(c.slug)}
               >
                 {tr?.name}{' '}
-                <span className="count">[{c.subcategories.length}]</span>
+                <span className="count">[{total}]</span>
               </button>
             );
           })}
@@ -101,22 +122,47 @@ export function Fleet() {
                   onClick={() => setActiveSub(s.slug)}
                 >
                   {tr?.name}
+                  {(s.itemCount ?? 0) > 0 && (
+                    <span className="count" style={{ marginLeft: 6 }}>
+                      [{s.itemCount}]
+                    </span>
+                  )}
                 </button>
               );
             })}
           </Reveal>
         )}
 
-        {/* Tier 3 — equipment cards inside the active subcategory */}
-        <StaggerGroup className="fleet-grid" stagger={0.06}>
-          {items.map((item) => (
-            <StaggerItem key={item.slug}>
-              <FleetCard item={item} lang={lang} />
-            </StaggerItem>
-          ))}
-        </StaggerGroup>
+        {categories.length === 0 && !isError && (
+          <div className="fleet-empty">
+            {lang === 'AZ'
+              ? 'Heç bir kateqoriya tapılmadı.'
+              : lang === 'RU'
+                ? 'Категории не найдены.'
+                : 'No categories found.'}
+          </div>
+        )}
 
-        {activeSub && items.length === 0 && subDetail && (
+        {/* Tier 3 — equipment cards inside the active subcategory.
+            Keyed by activeSub so switching subcategories forces a full remount
+            and re-runs the stagger animation; otherwise new items would
+            inherit the parent's already-completed "show" state and remain at
+            opacity 0. */}
+        {items.length > 0 && (
+          <StaggerGroup
+            key={activeSub ?? 'none'}
+            className="fleet-grid"
+            stagger={0.06}
+          >
+            {items.map((item) => (
+              <StaggerItem key={item.slug}>
+                <FleetCard item={item} lang={lang} />
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        )}
+
+        {activeSub && items.length === 0 && (
           <div className="fleet-empty">
             {lang === 'AZ'
               ? 'Bu alt-kateqoriyada hələ texnika yoxdur.'
@@ -146,11 +192,12 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
       <div className="img">
         {tr?.badge && <span className="badge">{tr.badge}</span>}
         {item.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={item.image}
-            alt={tr?.name ?? ''}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+            alt={tr?.name ?? item.modelNumber ?? item.slug}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
           />
         ) : (
           <Placeholder label={item.modelNumber ?? item.slug} />

@@ -38,7 +38,6 @@ export default function ProjectsList() {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Slug</th>
               <th>Şəkil</th>
               <th>AZ ad</th>
               <th>İl</th>
@@ -49,7 +48,6 @@ export default function ProjectsList() {
           <tbody>
             {data.map((p) => (
               <tr key={p.slug}>
-                <td><span className="mono">{p.slug}</span></td>
                 <td className="admin-table-logo">
                   {p.image && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -63,14 +61,14 @@ export default function ProjectsList() {
                   <Link href={`/admin/projects/${p.slug}`} className="admin-btn admin-btn-ghost">Redaktə</Link>
                   <button
                     className="admin-btn admin-btn-danger"
-                    onClick={() => { if (confirm(`"${p.slug}" silinsin?`)) remove.mutate(p.slug); }}
+                    onClick={() => { if (confirm(`"${pickTr(p.translations, 'AZ')?.title ?? p.slug}" silinsin?`)) remove.mutate(p.slug); }}
                     disabled={remove.isPending}
                   >Sil</button>
                 </td>
               </tr>
             ))}
             {data.length === 0 && (
-              <tr><td colSpan={6} className="admin-table-empty">Hələ layihə yoxdur.</td></tr>
+              <tr><td colSpan={5} className="admin-table-empty">Hələ layihə yoxdur.</td></tr>
             )}
           </tbody>
         </table>

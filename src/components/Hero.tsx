@@ -59,7 +59,7 @@ export function Hero() {
         : 'BAKI · AZƏRBAYCAN';
 
   return (
-    <section className="hero hero--minimal">
+    <section className="hero hero--minimal" data-lang={lang}>
       <div className="hero-grid grid-bg"></div>
       <div className="hero-glow" aria-hidden="true"></div>
 

@@ -6,6 +6,7 @@ import { useAdminAuth, adminFetch } from '@/lib/admin-auth';
 import { ApiError } from '@/lib/api';
 import type { OfferingDto } from '@/lib/types';
 import { TranslationsBlock, type LangCode } from './TranslationsBlock';
+import { ImageUploadField } from './ImageUploadField';
 import { useToast } from './ToastProvider';
 
 type Translations = Record<LangCode, Record<string, string>>;
@@ -88,10 +89,13 @@ export function OfferingForm({ initial, onSaved, onCancel }: Props) {
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <div className="admin-field">
-        <label>Icon (sayt komponentindən)</label>
-        <input value={icon} onChange={(e) => setIcon(e.target.value)} maxLength={64} placeholder="tools / truck / operator" />
-      </div>
+      <ImageUploadField
+        value={icon}
+        onChange={setIcon}
+        folder="offerings"
+        label="İkon / şəkil"
+        hint="Xidmət kartında göstəriləcək ikon. PNG/SVG tövsiyə olunur."
+      />
       <div className="admin-field">
         <label>Sıra</label>
         <input type="number" value={sortOrder} onChange={(e) => setSortOrder(Number(e.target.value))} />

@@ -6,10 +6,14 @@ import { pickTr } from '@/lib/types';
 import { TRANSLATIONS } from '@/lib/translations';
 import { Reveal, StaggerGroup, StaggerItem } from './motion';
 
-export function Testimonials() {
+export function Testimonials({
+  initialTestimonials,
+}: {
+  initialTestimonials?: import('@/lib/types').TestimonialDto[];
+} = {}) {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
-  const { data, isError } = useTestimonials();
+  const { data, isError } = useTestimonials(initialTestimonials);
   const items = isError ? [] : (data ?? []);
 
   return (

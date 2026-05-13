@@ -17,11 +17,12 @@ import type {
 // publishes content, so an aggressive stale time keeps the homepage snappy.
 const FIVE_MIN = 5 * 60 * 1000;
 
-export function useFleetCategories() {
+export function useFleetCategories(initialData?: FleetCategoryDto[]) {
   return useQuery({
     queryKey: ['fleet', 'categories'],
     queryFn: () => apiFetch<FleetCategoryDto[]>('/api/v1/public/fleet/categories'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }
 
@@ -43,42 +44,47 @@ export function useFleetItem(slug: string | null | undefined) {
   });
 }
 
-export function useProjects() {
+export function useProjects(initialData?: ProjectDto[]) {
   return useQuery({
     queryKey: ['projects'],
     queryFn: () => apiFetch<ProjectDto[]>('/api/v1/public/projects'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }
 
-export function useTestimonials() {
+export function useTestimonials(initialData?: TestimonialDto[]) {
   return useQuery({
     queryKey: ['testimonials'],
     queryFn: () => apiFetch<TestimonialDto[]>('/api/v1/public/testimonials'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }
 
-export function useOfferings() {
+export function useOfferings(initialData?: OfferingDto[]) {
   return useQuery({
     queryKey: ['offerings'],
     queryFn: () => apiFetch<OfferingDto[]>('/api/v1/public/offerings'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }
 
-export function useFaqs() {
+export function useFaqs(initialData?: FaqDto[]) {
   return useQuery({
     queryKey: ['faqs'],
     queryFn: () => apiFetch<FaqDto[]>('/api/v1/public/faqs'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }
 
-export function useClients() {
+export function useClients(initialData?: ClientDto[]) {
   return useQuery({
     queryKey: ['clients'],
     queryFn: () => apiFetch<ClientDto[]>('/api/v1/public/clients'),
     staleTime: FIVE_MIN,
+    initialData,
   });
 }

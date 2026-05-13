@@ -46,3 +46,25 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
 }
 
 export const apiBaseUrl = API_BASE;
+
+/**
+ * Server-side data fetch used by Server Components. Falls back to {@code null}
+ * on error so SSR keeps working when the backend is briefly unreachable —
+ * client-side React Query then refetches and the user sees the data once it
+ * lands. Uses Next's data cache with a short revalidate so admin edits show
+ * up within the minute.
+ */
+export async function serverFetch<T>(
+  path: string,
+  options: { revalidate?: number } = {},
+): Promise<T | null> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      next: { revalidate: options.revalidate ?? 60 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}

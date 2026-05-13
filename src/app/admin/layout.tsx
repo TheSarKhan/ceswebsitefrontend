@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Barlow, Barlow_Condensed, JetBrains_Mono } from 'next/font/google';
 import { AdminAuthProvider } from '@/lib/admin-auth';
 import { QueryProvider } from '@/components/QueryProvider';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AdminGate } from '@/components/admin/AdminGate';
 import { ToastProvider } from '@/components/admin/ToastProvider';
 import '../globals.css';
@@ -30,22 +31,29 @@ const jetMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'CES Admin',
   robots: { index: false, follow: false },
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function AdminRootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="az"
-      data-theme="dark"
       className={`${barlowSans.variable} ${barlowDisplay.variable} ${jetMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="admin-body">
+      <body className="admin-body" suppressHydrationWarning>
         <QueryProvider>
-          <AdminAuthProvider>
-            <ToastProvider>
-              <AdminGate>{children}</AdminGate>
-            </ToastProvider>
-          </AdminAuthProvider>
+          <ThemeProvider>
+            <AdminAuthProvider>
+              <ToastProvider>
+                <AdminGate>{children}</AdminGate>
+              </ToastProvider>
+            </AdminAuthProvider>
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Placeholder } from './Hero';
 import { useLang } from '@/lib/lang';
 import { useProjects } from '@/lib/hooks';
@@ -7,10 +8,14 @@ import { pickTr } from '@/lib/types';
 import { TRANSLATIONS } from '@/lib/translations';
 import { Reveal, StaggerGroup, StaggerItem } from './motion';
 
-export function Projects() {
+export function Projects({
+  initialProjects,
+}: {
+  initialProjects?: import('@/lib/types').ProjectDto[];
+} = {}) {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
-  const { data, isError } = useProjects();
+  const { data, isError } = useProjects(initialProjects);
   const projects = isError ? [] : (data ?? []);
 
   return (
@@ -36,11 +41,12 @@ export function Projects() {
               <StaggerItem key={p.slug} className="project">
                 <div className="img-fill">
                   {p.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={p.image}
-                      alt={tr?.title ?? ''}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+                      alt={tr?.title ?? p.slug}
+                      fill
+                      sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                      style={{ objectFit: 'cover' }}
                     />
                   ) : (
                     <Placeholder label={tr?.category?.toUpperCase() ?? ''} />

@@ -30,7 +30,9 @@ export function FleetCategoryForm({ initial, onSaved, onCancel }: Props) {
 
   const [icon, setIcon] = useState(initial?.icon ?? '');
   const [sortOrder, setSortOrder] = useState<number>(initial?.sortOrder ?? 0);
-  const [isPublished, setIsPublished] = useState<boolean>(true);
+  const [isPublished, setIsPublished] = useState<boolean>(
+    initial?.isPublished ?? true,
+  );
   const [tr, setTr] = useState<Translations>(() => {
     if (!initial) return EMPTY_TR;
     return {

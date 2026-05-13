@@ -38,7 +38,6 @@ export default function OfferingsList() {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Slug</th>
               <th>Icon</th>
               <th>AZ</th>
               <th>EN</th>
@@ -47,25 +46,36 @@ export default function OfferingsList() {
             </tr>
           </thead>
           <tbody>
-            {data.map((o) => (
-              <tr key={o.slug}>
-                <td><span className="mono">{o.slug}</span></td>
-                <td><span className="mono" style={{ color: 'var(--fg-3)' }}>{o.icon}</span></td>
-                <td>{pickTr(o.translations, 'AZ')?.title}</td>
-                <td>{pickTr(o.translations, 'EN')?.title}</td>
-                <td>{o.sortOrder}</td>
-                <td className="admin-table-actions">
-                  <Link href={`/admin/offerings/${o.slug}`} className="admin-btn admin-btn-ghost">Redaktə</Link>
-                  <button
-                    className="admin-btn admin-btn-danger"
-                    onClick={() => { if (confirm(`"${o.slug}" silinsin?`)) remove.mutate(o.slug); }}
-                    disabled={remove.isPending}
-                  >Sil</button>
-                </td>
-              </tr>
-            ))}
+            {data.map((o) => {
+              const az = pickTr(o.translations, 'AZ')?.title;
+              const isImage =
+                o.icon && (o.icon.startsWith('http') || o.icon.startsWith('/'));
+              return (
+                <tr key={o.slug}>
+                  <td className="admin-table-logo">
+                    {isImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={o.icon!} alt={az ?? o.slug} />
+                    ) : (
+                      <span className="mono" style={{ color: 'var(--fg-3)' }}>{o.icon}</span>
+                    )}
+                  </td>
+                  <td>{az}</td>
+                  <td>{pickTr(o.translations, 'EN')?.title}</td>
+                  <td>{o.sortOrder}</td>
+                  <td className="admin-table-actions">
+                    <Link href={`/admin/offerings/${o.slug}`} className="admin-btn admin-btn-ghost">Redaktə</Link>
+                    <button
+                      className="admin-btn admin-btn-danger"
+                      onClick={() => { if (confirm(`"${az ?? o.slug}" silinsin?`)) remove.mutate(o.slug); }}
+                      disabled={remove.isPending}
+                    >Sil</button>
+                  </td>
+                </tr>
+              );
+            })}
             {data.length === 0 && (
-              <tr><td colSpan={6} className="admin-table-empty">Hələ xidmət yoxdur.</td></tr>
+              <tr><td colSpan={5} className="admin-table-empty">Hələ xidmət yoxdur.</td></tr>
             )}
           </tbody>
         </table>

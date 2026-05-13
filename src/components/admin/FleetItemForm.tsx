@@ -20,11 +20,18 @@ const EMPTY_TR: Translations = {
 
 type Props = {
   initial?: FleetItemDto;
+  /** Prefill parent subcategory when creating (ignored in edit mode). */
+  defaultSubcategorySlug?: string;
   onSaved: () => void;
   onCancel: () => void;
 };
 
-export function FleetItemForm({ initial, onSaved, onCancel }: Props) {
+export function FleetItemForm({
+  initial,
+  defaultSubcategorySlug,
+  onSaved,
+  onCancel,
+}: Props) {
   const isEdit = !!initial;
   const { token, logout } = useAdminAuth();
   const qc = useQueryClient();
@@ -38,13 +45,17 @@ export function FleetItemForm({ initial, onSaved, onCancel }: Props) {
     enabled: !!token,
   });
 
-  const [subcategorySlug, setSubcategorySlug] = useState(initial?.subcategory.slug ?? '');
+  const [subcategorySlug, setSubcategorySlug] = useState(
+    initial?.subcategory.slug ?? defaultSubcategorySlug ?? '',
+  );
   const [modelNumber, setModelNumber] = useState(initial?.modelNumber ?? '');
   const [image, setImage] = useState(initial?.image ?? '');
   const [price, setPrice] = useState(initial?.price ?? '');
   const [priceUnit, setPriceUnit] = useState(initial?.priceUnit ?? 'day');
   const [sortOrder, setSortOrder] = useState<number>(initial?.sortOrder ?? 0);
-  const [isPublished, setIsPublished] = useState<boolean>(true);
+  const [isPublished, setIsPublished] = useState<boolean>(
+    initial?.isPublished ?? true,
+  );
   const [tr, setTr] = useState<Translations>(() => {
     if (!initial) return EMPTY_TR;
     return {

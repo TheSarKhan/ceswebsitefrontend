@@ -2,21 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, type ReactNode } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAdminAuth, adminFetch } from '@/lib/admin-auth';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Logo } from '@/components/Header';
 import { Breadcrumbs } from './Breadcrumbs';
 
-type NavLink = { href: string; label: string; badgeKey?: 'contact' | 'quote' };
+type NavLink = { href: string; label: string; badgeKey?: 'messages' };
 type NavGroup = { label: string; links: NavLink[] };
 
 const NAV: NavGroup[] = [
   {
     label: 'Texnika',
     links: [
-      { href: '/admin/fleet/categories',    label: 'Kateqoriyalar' },
-      { href: '/admin/fleet/subcategories', label: 'Alt-kateqoriyalar' },
-      { href: '/admin/fleet/items',         label: 'Texnika' },
+      { href: '/admin/fleet', label: 'Kataloq' },
     ],
   },
   {
@@ -32,8 +32,13 @@ const NAV: NavGroup[] = [
   {
     label: 'Sorğular',
     links: [
-      { href: '/admin/contact-submissions', label: 'Əlaqə formları',   badgeKey: 'contact' },
-      { href: '/admin/quote-submissions',   label: 'Qiymət təklifləri', badgeKey: 'quote' },
+      { href: '/admin/quote-submissions', label: 'Göndərilən mesajlar', badgeKey: 'messages' },
+    ],
+  },
+  {
+    label: 'Sistem',
+    links: [
+      { href: '/admin/trash', label: 'Silinmiş məlumatlar' },
     ],
   },
 ];
@@ -43,23 +48,11 @@ type SubmissionPage = {
   totalElements: number;
 };
 
-function useNewSubmissionCounts() {
+function useNewMessageCount() {
   const { token, logout } = useAdminAuth();
   const ONE_MIN = 60 * 1000;
 
-  const contact = useQuery({
-    queryKey: ['admin', 'contact-submissions'],
-    queryFn: () =>
-      adminFetch<SubmissionPage>(
-        '/api/v1/admin/contact-submissions?size=100',
-        token,
-        {},
-        logout,
-      ),
-    enabled: !!token,
-    staleTime: ONE_MIN,
-  });
-  const quote = useQuery({
+  const messages = useQuery({
     queryKey: ['admin', 'quote-submissions'],
     queryFn: () =>
       adminFetch<SubmissionPage>(
@@ -72,27 +65,67 @@ function useNewSubmissionCounts() {
     staleTime: ONE_MIN,
   });
 
-  const countNew = (page?: SubmissionPage) =>
-    page?.content.filter((s) => s.status === 'NEW').length ?? 0;
+  return messages.data?.content.filter((s) => s.status === 'NEW').length ?? 0;
+}
 
-  return {
-    contact: countNew(contact.data),
-    quote: countNew(quote.data),
-  };
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="admin-theme-toggle"
+      aria-label={theme === 'dark' ? 'İşıqlı moda keç' : 'Qaranlıq moda keç'}
+      title={theme === 'dark' ? 'İşıqlı mod' : 'Qaranlıq mod'}
+    >
+      {theme === 'dark' ? (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+        </svg>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
+    </button>
+  );
 }
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const { user, logout } = useAdminAuth();
   const pathname = usePathname();
-  const newCounts = useNewSubmissionCounts();
+  const qc = useQueryClient();
+  const newMessages = useNewMessageCount();
+
+  // Whenever the admin navigates to a different page, mark every cached
+  // ['admin', ...] query as stale. The newly mounted page renders with
+  // cached data immediately (no loading flash) and React Query refetches
+  // in the background — so the user always sees up-to-date data without
+  // having to hard-refresh.
+  useEffect(() => {
+    qc.invalidateQueries({ queryKey: ['admin'] });
+  }, [pathname, qc]);
 
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
-        <Link href="/admin" className="admin-brand">
-          <span className="mono">CES</span>
-          <span className="brand-sub">ADMIN</span>
-        </Link>
+        <div className="admin-brand-row">
+          <Link href="/admin" className="admin-brand" aria-label="Dashboard">
+            <Logo size={88} />
+          </Link>
+          <ThemeToggle />
+        </div>
 
         <nav className="admin-nav">
           <Link
@@ -108,12 +141,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               {group.links.map((link) => {
                 const active =
                   pathname === link.href || pathname.startsWith(link.href + '/');
-                const badge =
-                  link.badgeKey === 'contact'
-                    ? newCounts.contact
-                    : link.badgeKey === 'quote'
-                      ? newCounts.quote
-                      : 0;
+                const badge = link.badgeKey === 'messages' ? newMessages : 0;
                 return (
                   <Link
                     key={link.href}

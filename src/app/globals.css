@@ -368,6 +368,14 @@
     letter-spacing: -0.02em;
     text-transform: uppercase;
     margin-bottom: 32px;
+    overflow-wrap: break-word;
+  }
+  /* Russian headlines (e.g. "Бесперебойный", 13 chars) are ~50% wider than
+     AZ/EN equivalents — cap the upper font size so the gold word doesn't
+     bleed into the stats column on large desktops. */
+  .hero[data-lang="RU"] h1 {
+    font-size: clamp(40px, 6vw, 96px);
+    letter-spacing: -0.025em;
   }
   .hero h1 .gold { color: var(--gold); }
   .hero h1 .stroke {
@@ -1636,3 +1644,229 @@
     .nav-links { display: none; }
     .menu-toggle { display: inline-flex; }
   }
+
+  /* =========================================================================
+     Programmatic SEO — /rent hub + /rent/[category]/[city] matrix pages.
+     Reuses the dark industrial palette; type sizes tightened so the page
+     reads as informational, not promotional.
+     ========================================================================= */
+  .rent-page { background: var(--bg); color: var(--fg); }
+  .rent-hero { padding-top: clamp(48px, 7vw, 96px); }
+  .rent-h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 4.6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin: 12px 0 22px;
+    max-width: 16ch;
+  }
+  .rent-h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(22px, 2.8vw, 36px);
+    line-height: 1.1;
+    margin: 8px 0 22px;
+    max-width: 20ch;
+  }
+  .rent-lead {
+    font-size: clamp(15px, 1.3vw, 18px);
+    line-height: 1.6;
+    color: var(--fg-2);
+    max-width: 64ch;
+    margin-bottom: 14px;
+  }
+  .rent-lead:last-child { margin-bottom: 0; }
+  .rent-lead-narrow { max-width: 56ch; }
+  .rent-prose {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg-2);
+  }
+  .rent-2col {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(28px, 4vw, 72px);
+    align-items: start;
+  }
+  @media (max-width: 800px) { .rent-2col { grid-template-columns: 1fr; } }
+
+  .rent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .rent-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 22px 22px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    text-decoration: none;
+    transition: border-color .15s ease, background .15s ease;
+    min-height: 110px;
+  }
+  .rent-card:hover { border-color: var(--gold); background: var(--bg-3); }
+  .rent-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+  .rent-card-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .rent-card-city { background: var(--bg); cursor: default; }
+  .rent-card-city:hover { border-color: var(--line); background: var(--bg); }
+  .rent-card-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-3);
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+
+  /* matrix table-ish layout */
+  .rent-matrix {
+    border-top: 1px solid var(--line);
+  }
+  .rent-matrix-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 3fr);
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  @media (max-width: 800px) {
+    .rent-matrix-row { grid-template-columns: 1fr; gap: 12px; }
+  }
+  .rent-matrix-cat h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .rent-matrix-cities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .rent-matrix-link {
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg-2);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: border-color .12s ease, color .12s ease;
+  }
+  .rent-matrix-link:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* equipment list inside a rental page */
+  .rent-equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .rent-item {
+    border: 1px solid var(--line);
+    background: var(--bg);
+    overflow: hidden;
+    transition: border-color .12s ease;
+  }
+  .rent-item:hover { border-color: var(--gold); }
+  .rent-item-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+  }
+  .rent-item-body { padding: 14px 16px 16px; }
+  .rent-item-model {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+  }
+  .rent-item h3 { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
+  .rent-item-price { font-size: 13px; color: var(--gold); font-weight: 600; }
+
+  /* FAQ block */
+  .rent-faq { display: flex; flex-direction: column; gap: 6px; }
+  .rent-faq-item {
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .rent-faq-item summary {
+    list-style: none;
+    padding: 16px 22px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rent-faq-item summary::-webkit-details-marker { display: none; }
+  .rent-faq-item summary::after {
+    content: '+';
+    color: var(--gold);
+    font-family: var(--font-mono);
+    font-size: 18px;
+  }
+  .rent-faq-item[open] summary::after { content: '−'; }
+  .rent-faq-item p {
+    padding: 0 22px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-2);
+    margin: 0;
+  }
+
+  /* related links 2-col */
+  .rent-related {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 3vw, 60px);
+  }
+  @media (max-width: 700px) { .rent-related { grid-template-columns: 1fr; } }
+  .rent-related-h {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 0 0 14px;
+  }
+  .rent-related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rent-related-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .rent-related-list li:last-child { border-bottom: 0; }
+  .rent-related-list a {
+    color: var(--fg-2);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .12s ease;
+  }
+  .rent-related-list a:hover { color: var(--gold); }
+
+  .rent-cta {
+    text-align: left;
+  }
+

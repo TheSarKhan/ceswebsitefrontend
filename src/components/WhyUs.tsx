@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Icon } from './icons';
 import { useLang } from '@/lib/lang';
 import { TRANSLATIONS } from '@/lib/translations';
@@ -99,11 +100,12 @@ export function WhyUs() {
                   ? 'КАМЕРА ОБЪЕКТА · ЖИВОЙ ЭФИР'
                   : 'SITE CAMERA · LIVE'}
             </span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=2070"
               alt="Construction machinery at work"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+              fill
+              sizes="(max-width: 900px) 100vw, 50vw"
+              style={{ objectFit: 'cover' }}
             />
             <div className="quote-overlay">
               <div className="q">

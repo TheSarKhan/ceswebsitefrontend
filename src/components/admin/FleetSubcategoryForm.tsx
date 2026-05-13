@@ -18,11 +18,18 @@ const EMPTY_TR: Translations = {
 
 type Props = {
   initial?: FleetSubcategoryDto;
+  /** Prefill parent category when creating (ignored in edit mode). */
+  defaultCategorySlug?: string;
   onSaved: () => void;
   onCancel: () => void;
 };
 
-export function FleetSubcategoryForm({ initial, onSaved, onCancel }: Props) {
+export function FleetSubcategoryForm({
+  initial,
+  defaultCategorySlug,
+  onSaved,
+  onCancel,
+}: Props) {
   const isEdit = !!initial;
   const { token, logout } = useAdminAuth();
   const qc = useQueryClient();
@@ -36,9 +43,13 @@ export function FleetSubcategoryForm({ initial, onSaved, onCancel }: Props) {
     enabled: !!token,
   });
 
-  const [categorySlug, setCategorySlug] = useState(initial?.category.slug ?? '');
+  const [categorySlug, setCategorySlug] = useState(
+    initial?.category.slug ?? defaultCategorySlug ?? '',
+  );
   const [sortOrder, setSortOrder] = useState<number>(initial?.sortOrder ?? 0);
-  const [isPublished, setIsPublished] = useState<boolean>(true);
+  const [isPublished, setIsPublished] = useState<boolean>(
+    initial?.isPublished ?? true,
+  );
   const [tr, setTr] = useState<Translations>(() => {
     if (!initial) return EMPTY_TR;
     return {
