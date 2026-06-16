@@ -21,6 +21,9 @@ try {
 }
 
 const nextConfig: NextConfig = {
+  // Emit a self-contained server bundle (.next/standalone) so the production
+  // Docker image stays small and doesn't need the full node_modules tree.
+  output: 'standalone',
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },

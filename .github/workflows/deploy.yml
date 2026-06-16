@@ -1,0 +1,60 @@
+name: Deploy frontend
+
+# Auto-deploys to the VPS on every push to master, and can be run manually.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Never run two deploys at once; let an in-flight one finish.
+concurrency:
+  group: deploy-cesweb-frontend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Ship source and rebuild on server
+        env:
+          HOST: ${{ secrets.SSH_HOST }}
+          USER: ${{ secrets.SSH_USER }}
+        run: |
+          set -e
+          tar czf /tmp/src.tgz --exclude=.git --exclude=node_modules --exclude=.next .
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new /tmp/src.tgz "$USER@$HOST:/tmp/cesweb-frontend-src.tgz"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$USER@$HOST" '
+            set -e
+            rm -rf /opt/cesweb/ces-frontend
+            mkdir -p /opt/cesweb/ces-frontend
+            tar xzf /tmp/cesweb-frontend-src.tgz -C /opt/cesweb/ces-frontend
+            rm -f /tmp/cesweb-frontend-src.tgz
+            cd /opt/cesweb
+            docker compose --env-file .env.cesweb -f docker-compose.cesweb.yml up -d --build frontend
+            docker image prune -f
+          '
+
+      - name: Smoke check
+        env:
+          HOST: ${{ secrets.SSH_HOST }}
+          USER: ${{ secrets.SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$USER@$HOST" '
+            for i in $(seq 1 12); do
+              code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8090/)
+              if [ "$code" = "200" ] || [ "$code" = "307" ]; then
+                echo "frontend OK ($code)"; exit 0
+              fi
+              echo "waiting for frontend... ($i: $code)"; sleep 5
+            done
+            echo "frontend did not respond in time"; exit 1
+          '

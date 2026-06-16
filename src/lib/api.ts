@@ -5,9 +5,19 @@
  * in both server and client components. Throws on non-2xx so React Query can
  * surface errors via {@code isError} / {@code error}.
  */
+// Browser-facing base — inlined into the client bundle at build time. In prod
+// this is the public origin (e.g. https://ces.sarkhan.online) and the reverse
+// proxy forwards /api, /uploads to the backend.
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, '') ??
   'http://localhost:8080';
+
+// Server-only base — read at runtime inside Server Components. Lets the
+// frontend container reach the backend directly over the Docker network
+// (e.g. http://backend:8080) instead of hairpinning back through the public
+// proxy. Falls back to the public base when unset (dev / single-process).
+const SERVER_API_BASE =
+  process.env.API_INTERNAL_BASE_URL?.replace(/\/+$/, '') ?? API_BASE;
 
 export class ApiError extends Error {
   constructor(public status: number, message: string, public body?: unknown) {
@@ -45,7 +55,9 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   return (await res.json()) as T;
 }
 
-export const apiBaseUrl = API_BASE;
+// Used by server-side callers (sitemap). Point at the internal base so it
+// resolves over the Docker network in prod.
+export const apiBaseUrl = SERVER_API_BASE;
 
 /**
  * Server-side data fetch used by Server Components. Falls back to {@code null}
@@ -59,7 +71,7 @@ export async function serverFetch<T>(
   options: { revalidate?: number } = {},
 ): Promise<T | null> {
   try {
-    const res = await fetch(`${API_BASE}${path}`, {
+    const res = await fetch(`${SERVER_API_BASE}${path}`, {
       next: { revalidate: options.revalidate ?? 60 },
     });
     if (!res.ok) return null;

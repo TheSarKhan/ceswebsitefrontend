@@ -444,7 +444,7 @@ export default function FleetAdminPage() {
             onCancel={closeModal}
           />
         )}
-        {modal.kind === 'item-edit' && editingItem.data && (
+        {modal.kind === 'item-edit' && !!editingItem.data && (
           <FleetItemForm
             initial={editingItem.data as never}
             onSaved={closeModal}
