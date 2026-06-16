@@ -69,15 +69,10 @@ jobs:
           TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
           STATUS: ${{ job.status }}
         run: |
-          [ -z "$TG_TOKEN" ] && { echo "No Telegram secret set, skipping notification."; exit 0; }
+          if [ -z "$TG_TOKEN" ]; then echo "No Telegram secret set, skipping notification."; exit 0; fi
           if [ "$STATUS" = "success" ]; then ICON="✅"; else ICON="❌"; fi
           SHA="${{ github.sha }}"
-          TEXT="$ICON CES frontend deploy: $STATUS
-Repo: ${{ github.repository }}
-Branch: ${{ github.ref_name }}
-Commit: ${SHA:0:7}
-By: ${{ github.actor }}
-Site: https://ces.sarkhan.online"
+          TEXT=$(printf '%s CES frontend deploy: %s\nRepo: %s\nBranch: %s\nCommit: %s\nBy: %s\nSite: https://ces.sarkhan.online' "$ICON" "$STATUS" "${{ github.repository }}" "${{ github.ref_name }}" "${SHA:0:7}" "${{ github.actor }}")
           curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TG_CHAT}" \
             --data-urlencode "text=${TEXT}" -o /dev/null
