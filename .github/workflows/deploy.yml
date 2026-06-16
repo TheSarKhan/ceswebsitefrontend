@@ -19,10 +19,13 @@ jobs:
 
       - name: Set up SSH key
         run: |
+          if [ -z "${{ secrets.SSH_HOST }}" ] || [ -z "${{ secrets.SSH_USER }}" ] || [ -z "${{ secrets.SSH_KEY }}" ]; then
+            echo "::error::Missing repository secret(s). Set SSH_HOST, SSH_USER and SSH_KEY under Settings → Secrets and variables → Actions."
+            exit 1
+          fi
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Ship source and rebuild on server
         env:
