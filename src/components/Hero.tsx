@@ -125,7 +125,9 @@ export function Hero() {
             <motion.div className="hero-stat" variants={statItem}>
               <span className="bar" aria-hidden="true"></span>
               <span className="num">01</span>
-              <span className="val">EXPRESS</span>
+              <span className="val">
+                100<span className="unit">%</span>
+              </span>
               <span className="lbl">{t.stat_delivery}</span>
             </motion.div>
             <motion.div className="hero-stat" variants={statItem}>
