@@ -6,12 +6,12 @@ export type Lang = 'AZ' | 'RU' | 'EN';
 
 export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   AZ: {
-    hero_t1: 'Bakıda',
+    hero_t1: 'Azərbaycan üzrə',
     hero_t2: 'Texnika İcarəsi.',
     hero_t3: 'Kəsintisiz',
     hero_t4: 'Proqres.',
     hero_sub:
-      'Bakı və Sumqayıtda avtokran, forklift və hündürlük səbətlərinin peşəkar icarəsi. Təcrübəli operator heyəti ilə birgə istənilən ünvana operativ çatdırılma.',
+      'Avtokran, forklift və hündürlük səbətlərinin peşəkar icarəsi — Azərbaycanın bütün bölgələrində. Təcrübəli operator heyəti ilə istənilən ünvana operativ çatdırılma.',
     hero_btn1: 'Texnika Bazası',
     hero_btn2: 'Qiymət Təklifi Al',
     stat_delivery: 'Sığortalı texnika parkı',
@@ -52,12 +52,12 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     footer_copy: 'Bütün hüquqlar qorunur.',
   },
   RU: {
-    hero_t1: 'В Баку',
+    hero_t1: 'По Азербайджану',
     hero_t2: 'Аренда Техники.',
     hero_t3: 'Бесперебойный',
     hero_t4: 'Прогресс.',
     hero_sub:
-      'Профессиональная аренда автокранов, погрузчиков и подъемников в Баку и Сумгаите. Оперативная доставка с опытными операторами на любой объект.',
+      'Профессиональная аренда автокранов, погрузчиков и подъемников по всему Азербайджану. Оперативная доставка с опытными операторами на любой объект.',
     hero_btn1: 'База Техники',
     hero_btn2: 'Получить Предложение',
     stat_delivery: 'Застрахованный парк техники',
@@ -98,12 +98,12 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     footer_copy: 'Все права защищены.',
   },
   EN: {
-    hero_t1: 'In Baku',
+    hero_t1: 'Across Azerbaijan',
     hero_t2: 'Equipment Rental.',
     hero_t3: 'Seamless',
     hero_t4: 'Progress.',
     hero_sub:
-      'Professional rental of mobile cranes, forklifts, and aerial platforms across Baku and Sumgait. Rapid delivery with an experienced operator team to any site.',
+      'Professional rental of mobile cranes, forklifts, and aerial platforms across all regions of Azerbaijan. Rapid delivery with an experienced operator team to any site.',
     hero_btn1: 'Equipment Base',
     hero_btn2: 'Get a Quote',
     stat_delivery: 'Fully insured fleet',
