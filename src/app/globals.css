@@ -18,7 +18,7 @@
     --font-sans:    'Barlow', system-ui, sans-serif;
     --font-mono:    'JetBrains Mono', monospace;
 
-    --max:          1440px;
+    --max:          100%;
     --pad:          clamp(16px, 4vw, 56px);
   }
 
