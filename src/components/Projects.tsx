@@ -52,20 +52,6 @@ export function Projects({
                     <Placeholder label={tr?.category?.toUpperCase() ?? ''} />
                   )}
                 </div>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 16,
-                    left: 16,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 10,
-                    color: 'var(--gold)',
-                    letterSpacing: '0.2em',
-                    zIndex: 2,
-                  }}
-                >
-                  {p.slug}
-                </div>
                 <div className="project-overlay">
                   <div className="cat">{tr?.category}</div>
                   <h4>{tr?.title}</h4>

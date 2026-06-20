@@ -1089,7 +1089,7 @@
     position: absolute; left: 0; right: 0; bottom: 0;
     padding: 24px;
     background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0));
-    transform: translateY(40px);
+    transform: translateY(0);
     transition: transform .3s ease;
   }
   .project-overlay .cat {
