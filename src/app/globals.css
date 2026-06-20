@@ -1027,7 +1027,9 @@
     position: relative;
     border: 1px solid var(--line);
     background: var(--bg-2);
-    aspect-ratio: 3 / 4;
+    /* Match the height of the list column instead of forcing a tall portrait. */
+    height: 100%;
+    min-height: 420px;
     overflow: hidden;
   }
   .why-visual .badge-overlay {
@@ -1466,7 +1468,7 @@
     .nav.menu-open { background: var(--bg); }
     .hide-mobile { display: none !important; }
 
-    .why-visual { aspect-ratio: 16 / 9; }
+    .why-visual { aspect-ratio: 16 / 9; height: auto; min-height: 0; }
   }
 
   /* 900px – tablet portrait */

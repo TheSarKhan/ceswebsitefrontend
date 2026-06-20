@@ -101,7 +101,7 @@ export function WhyUs() {
                   : 'SITE CAMERA · LIVE'}
             </span>
             <Image
-              src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=2070"
+              src="https://ces.sarkhan.online/uploads/why-visual.jpg"
               alt="Construction machinery at work"
               fill
               sizes="(max-width: 900px) 100vw, 50vw"
