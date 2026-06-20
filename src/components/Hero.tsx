@@ -51,12 +51,6 @@ export function Placeholder({
 export function Hero() {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
-  const region =
-    lang === 'RU'
-      ? 'БАКУ · АЗЕРБАЙДЖАН'
-      : lang === 'EN'
-        ? 'BAKU · AZERBAIJAN'
-        : 'BAKI · AZƏRBAYCAN';
 
   return (
     <section className="hero hero--minimal" data-lang={lang}>
@@ -79,19 +73,6 @@ export function Hero() {
       >
         <div className="hero-grid-2col">
           <div className="hero-content">
-            <motion.div className="hero-eyebrow" variants={heroItem}>
-              <motion.span
-                className="blip"
-                animate={{ scale: [1, 1.35, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <span
-                className="mono"
-                style={{ fontSize: 11, letterSpacing: '0.18em' }}
-              >
-                EST. 2020 — {region}
-              </span>
-            </motion.div>
             <motion.h1 variants={heroItem}>
               <span>{t.hero_t1}</span>
               <br />
