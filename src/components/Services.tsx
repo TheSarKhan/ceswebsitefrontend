@@ -42,7 +42,6 @@ export function Services({
             const tr = pickTr(it.translations, lang);
             return (
               <StaggerItem key={it.slug} className="service">
-                <div className="num">{tr?.eyebrow}</div>
                 {it.icon && (
                   <div className="service-icon">
                     {isImageUrl(it.icon) ? (
@@ -60,10 +59,6 @@ export function Services({
                 )}
                 <h3>{tr?.title}</h3>
                 <p>{tr?.description}</p>
-                <span className="arrow">
-                  {lang === 'AZ' ? 'Ətraflı' : lang === 'RU' ? 'Подробнее' : 'Details'}{' '}
-                  <Icon name="arrow-right" size={12} stroke={2.5} />
-                </span>
               </StaggerItem>
             );
           })}
