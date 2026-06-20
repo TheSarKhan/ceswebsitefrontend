@@ -1087,7 +1087,15 @@
   .project:hover { border-color: var(--gold); }
   .project:hover .project-overlay { transform: translateY(0); }
   .project:nth-child(1) { grid-row: span 2; }
-  .project .img-fill { position: absolute; inset: 0; }
+  /* Project visuals are brand logos, not photos — show them whole on a clean
+     white card with breathing room instead of cropping them to fill. */
+  .project .img-fill {
+    position: absolute; inset: 0;
+    background: #fff;
+    padding: clamp(22px, 5%, 48px);
+    /* keep the logo clear of the dark caption gradient at the bottom */
+    padding-bottom: clamp(64px, 14%, 96px);
+  }
   .project-overlay {
     position: absolute; left: 0; right: 0; bottom: 0;
     padding: 24px;

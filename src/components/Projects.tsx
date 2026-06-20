@@ -46,7 +46,7 @@ export function Projects({
                       alt={tr?.title ?? p.slug}
                       fill
                       sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'contain' }}
                     />
                   ) : (
                     <Placeholder label={tr?.category?.toUpperCase() ?? ''} />
