@@ -38,7 +38,7 @@ const COMPANY = {
   foundingDate: '2020',
   areaServed: ['Bakı', 'Sumqayıt', 'Azərbaycan'],
   languages: ['Azerbaijani', 'Russian', 'English'],
-  openingHours: 'Mo-Su 00:00-23:59', // 24/7 dispatcher
+  openingHours: 'Mo-Sa 09:00-18:00', // confirm real working hours
   socialProfiles: [] as string[], // Add Instagram/Facebook/LinkedIn URLs here
 };
 

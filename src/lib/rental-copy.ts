@@ -64,7 +64,7 @@ export function buildRentalCopy(
       ],
       industryHeading: `${cityName} üçün niyə CES?`,
       deliveryHeading: 'Çatdırılma və quraşdırma',
-      deliveryBody: `Bakıdakı baza ilə ${cityName} arası məsafə təxminən ${city.distanceKm} km-dir. Standart çatdırılma müddəti: ${city.delivery.az}. Təcili sifarişlər üçün gecə-gündüz dispetçer xidmətimiz mövcuddur.`,
+      deliveryBody: `Bakıdakı baza ilə ${cityName} arası məsafə təxminən ${city.distanceKm} km-dir. Standart çatdırılma müddəti: ${city.delivery.az}. Təcili sifarişlər üçün dispetçer xidmətimiz operativ kömək edir.`,
       pricingHeading: 'Qiymət və müqavilə şərtləri',
       pricingBody: `Tariflər saat, gün, həftə və ay formatlarında təklif olunur. Hər müqavilədə yanacaq, sığorta, operator və TƏN sənədləri daxildir — gizli xərc yoxdur. ${cityName} üçün uzunmüddətli (3+ ay) icarələrdə endirim sistemi tətbiq olunur.`,
       faq: [
@@ -106,7 +106,7 @@ export function buildRentalCopy(
       ],
       industryHeading: `Почему CES для ${cityName}?`,
       deliveryHeading: 'Доставка и установка',
-      deliveryBody: `Расстояние от базы в Баку до ${cityName} — около ${city.distanceKm} км. Стандартное время доставки: ${city.delivery.ru}. Для срочных заявок работает круглосуточный диспетчер.`,
+      deliveryBody: `Расстояние от базы в Баку до ${cityName} — около ${city.distanceKm} км. Стандартное время доставки: ${city.delivery.ru}. Для срочных заявок оперативно помогает наш диспетчер.`,
       pricingHeading: 'Цена и условия договора',
       pricingBody: `Тарифы по часам, дням, неделям и месяцам. В каждом договоре включены топливо, страховка, оператор и техдокументы — никаких скрытых платежей. Для долгосрочных аренд (3+ месяца) на ${cityName} действует скидочная система.`,
       faq: [
@@ -148,7 +148,7 @@ export function buildRentalCopy(
     ],
     industryHeading: `Why CES for ${cityName}?`,
     deliveryHeading: 'Delivery & setup',
-    deliveryBody: `The Baku depot is approximately ${city.distanceKm} km from ${cityName}. Standard delivery window: ${city.delivery.en}. A 24/7 dispatcher handles urgent requests.`,
+    deliveryBody: `The Baku depot is approximately ${city.distanceKm} km from ${cityName}. Standard delivery window: ${city.delivery.en}. Our dispatcher handles urgent requests promptly.`,
     pricingHeading: 'Pricing & contract terms',
     pricingBody: `Hourly, daily, weekly, and monthly rates. Every contract includes fuel, insurance, operator, and inspection paperwork — no hidden fees. Long-term rentals (3+ months) to ${cityName} qualify for tiered discounts.`,
     faq: [

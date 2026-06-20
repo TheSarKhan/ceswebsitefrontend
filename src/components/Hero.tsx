@@ -115,7 +115,7 @@ export function Hero() {
               <span className="bar" aria-hidden="true"></span>
               <span className="num">02</span>
               <span className="val">
-                24<span className="unit">/7</span>
+                25<span className="unit">+</span>
               </span>
               <span className="lbl">{t.stat_support}</span>
             </motion.div>
@@ -157,7 +157,7 @@ export function Hero() {
               <span className="dot">/</span>
               <span>BULDOZER</span>
               <span className="dot">/</span>
-              <span className="gold">24/7 ÇATDIRILMA</span>
+              <span className="gold">OPERATORLA ÇATDIRILMA</span>
               <span className="dot">/</span>
               <span>OPERATORLA</span>
               <span className="dot">/</span>

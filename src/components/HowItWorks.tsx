@@ -26,7 +26,7 @@ export function HowItWorks() {
       n: '04',
       tag: 'OBYEKTDƏ',
       t: 'İş başlayır',
-      d: 'Texnika operatorla birlikdə vaxtında obyektdə olur. 24/7 dispetçer dəstəyi davam edir.',
+      d: 'Texnika operatorla birlikdə vaxtında obyektdə olur. Dispetçerimiz proses boyu əlaqədə qalır.',
     },
   ];
   return (

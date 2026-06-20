@@ -33,7 +33,7 @@ const HUB_COPY: Record<Locale, {
 }> = {
   az: {
     title: 'Texnika icarəsi — bütün şəhərlər və kateqoriyalar | CES',
-    description: 'Bakı, Sumqayıt, Abşeron, Şirvan, Gəncə — bütün şəhərlərdə avtokran, forklift, ekskavator, hündürlük səbəti icarəsi. CES — 120+ vahidlik park, 24/7 dispetçer.',
+    description: 'Bakı, Sumqayıt, Abşeron, Şirvan, Gəncə — bütün şəhərlərdə avtokran, forklift, ekskavator, hündürlük səbəti icarəsi. CES — 120+ vahidlik park, operatorlu icarə.',
     h1: 'Bütün texnika kateqoriyaları və xidmət ərazisi',
     lead: 'CES texnika icarəsi şəbəkəsi — Azərbaycanın 5 əsas sənaye mərkəzini əhatə edir. Aşağıdan kateqoriya və ya şəhər seçin, və ya birbaşa konkret kombinasiyaya keçin.',
     catHeading: 'Kateqoriyalar',
@@ -46,7 +46,7 @@ const HUB_COPY: Record<Locale, {
   },
   ru: {
     title: 'Аренда техники — все города и категории | CES',
-    description: 'Аренда автокранов, погрузчиков, экскаваторов и подъёмников в Баку, Сумгаите, Абшероне, Ширване и Гяндже. CES — парк 120+ единиц, диспетчер 24/7.',
+    description: 'Аренда автокранов, погрузчиков, экскаваторов и подъёмников в Баку, Сумгаите, Абшероне, Ширване и Гяндже. CES — парк 120+ единиц, аренда с оператором.',
     h1: 'Все категории техники и зона обслуживания',
     lead: 'Сеть аренды техники CES охватывает 5 ключевых промышленных центров Азербайджана. Выберите категорию или город ниже, или перейдите к конкретной комбинации.',
     catHeading: 'Категории',
@@ -59,7 +59,7 @@ const HUB_COPY: Record<Locale, {
   },
   en: {
     title: 'Equipment rental — all cities & categories | CES',
-    description: 'Rent cranes, forklifts, excavators, and aerial platforms in Baku, Sumgait, Absheron, Shirvan, and Ganja. CES — 120+ unit fleet, 24/7 dispatcher.',
+    description: 'Rent cranes, forklifts, excavators, and aerial platforms in Baku, Sumgait, Absheron, Shirvan, and Ganja. CES — 120+ unit fleet, rental with operator.',
     h1: 'All equipment categories and service area',
     lead: 'CES equipment rental network covers 5 key industrial centres of Azerbaijan. Pick a category or city below, or jump straight to a specific combination.',
     catHeading: 'Categories',

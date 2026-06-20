@@ -53,11 +53,11 @@ export function WhyUs() {
     {
       id: '05',
       icon: 'clock',
-      t: { AZ: 'Fasiləsiz Dispetçer Xidməti', RU: 'Круглосуточная Поддержка', EN: '24/7 Dispatch Support' }[lang],
+      t: { AZ: 'Operativ Dispetçer Dəstəyi', RU: 'Оперативная Диспетчерская Поддержка', EN: 'Prompt Dispatch Support' }[lang],
       d: {
-        AZ: 'Günün istənilən vaxtı (24/7) aktiv olan dispetçer dəstəyi. Təcili sorğular və texniki yerdəyişmələr operativ həll olunur.',
-        RU: 'Поддержка диспетчера 24/7. Срочные запросы и технические перестановки решаются оперативно.',
-        EN: 'Dispatcher support active 24/7. Urgent requests and technical relocations are handled promptly.',
+        AZ: 'Təcili sorğular və texniki yerdəyişmələr operativ həll olunur. Dispetçerimiz bütün proses boyu əlaqədə qalır.',
+        RU: 'Оперативная диспетчерская поддержка. Срочные запросы и технические перестановки решаются быстро.',
+        EN: 'Prompt dispatcher support. Urgent requests and technical relocations are handled quickly.',
       }[lang],
     },
   ];
