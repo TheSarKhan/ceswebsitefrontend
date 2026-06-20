@@ -1356,6 +1356,15 @@
     outline: none;
     border-color: var(--gold);
   }
+  /* Native dropdown panel: without this the options inherit the light --fg
+     colour and render near-invisible on the browser's light option panel. */
+  .form-field select option {
+    background: var(--bg-2);
+    color: var(--fg);
+  }
+  .form-field select option:disabled {
+    color: var(--fg-3);
+  }
   .form-field textarea { resize: vertical; min-height: 90px; }
   .form-submit { grid-column: span 2; margin-top: 8px; }
 
