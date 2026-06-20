@@ -11,6 +11,9 @@ export function Clients({
   const { data, isError } = useClients(initialClients);
   const clients = isError ? [] : (data ?? []);
 
+  // Duplicate the list so the marquee track can loop seamlessly.
+  const loop = clients.length > 0 ? [...clients, ...clients] : [];
+
   return (
     <section className="section-pad" style={{ background: 'var(--bg-2)' }}>
       <div className="container">
@@ -38,32 +41,32 @@ export function Clients({
             Hamısına bax →
           </a>
         </div>
-        <div className="clients-grid">
-          {clients.map((c) => (
-            <div key={c.id} className="client-cell">
-              <div className="client-logo-wrap">
+      </div>
+
+      {clients.length > 0 && (
+        <div className="clients-marquee" aria-label="Müştərilər">
+          <div className="clients-track">
+            {loop.map((c, i) => (
+              <div key={`${c.id}-${i}`} className="client-chip" aria-hidden={i >= clients.length}>
                 <Image
                   src={c.logo}
                   alt={c.name}
                   width={240}
                   height={80}
-                  sizes="(max-width: 700px) 33vw, 160px"
+                  sizes="160px"
                   style={{
                     width: 'auto',
                     height: 'auto',
-                    maxWidth: '70%',
-                    maxHeight: '50px',
+                    maxWidth: '100%',
+                    maxHeight: '46px',
                     objectFit: 'contain',
-                    opacity: 0.6,
-                    filter: 'grayscale(1) brightness(2)',
-                    transition: 'all 0.3s ease',
                   }}
                 />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
