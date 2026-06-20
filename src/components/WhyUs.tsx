@@ -92,14 +92,6 @@ export function WhyUs() {
           </StaggerGroup>
 
           <Reveal className="why-visual" delay={0.15}>
-            <span className="badge-overlay">
-              ▸{' '}
-              {lang === 'AZ'
-                ? 'OBYEKT KAMERASI · CANLI'
-                : lang === 'RU'
-                  ? 'КАМЕРА ОБЪЕКТА · ЖИВОЙ ЭФИР'
-                  : 'SITE CAMERA · LIVE'}
-            </span>
             <Image
               src="https://ces.sarkhan.online/uploads/why-visual.jpg"
               alt="Construction machinery at work"

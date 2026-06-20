@@ -92,18 +92,13 @@ export function Fleet({
           {categories.map((c) => {
             const tr = pickTr(c.translations, lang);
             const isActive = activeCat === c.slug;
-            const total = c.subcategories.reduce(
-              (sum, s) => sum + (s.itemCount ?? 0),
-              0,
-            );
             return (
               <button
                 key={c.slug}
                 className={'fleet-tab ' + (isActive ? 'active' : '')}
                 onClick={() => setActiveCat(c.slug)}
               >
-                {tr?.name}{' '}
-                <span className="count">[{total}]</span>
+                {tr?.name}
               </button>
             );
           })}
@@ -122,11 +117,6 @@ export function Fleet({
                   onClick={() => setActiveSub(s.slug)}
                 >
                   {tr?.name}
-                  {(s.itemCount ?? 0) > 0 && (
-                    <span className="count" style={{ marginLeft: 6 }}>
-                      [{s.itemCount}]
-                    </span>
-                  )}
                 </button>
               );
             })}
