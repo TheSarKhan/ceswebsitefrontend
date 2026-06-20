@@ -1435,13 +1435,13 @@
     letter-spacing: -0.04em;
     text-transform: uppercase;
     text-align: center;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--line-strong);
+    color: rgba(244, 241, 234, 0.03);
+    -webkit-text-stroke: 1.5px var(--fg-3);
     white-space: nowrap;
   }
   .megamark .word.gold {
-    -webkit-text-stroke: 1px var(--gold);
-    color: rgba(201, 162, 75, 0.04);
+    -webkit-text-stroke: 1.5px var(--gold);
+    color: rgba(201, 162, 75, 0.06);
   }
 
   /* corner brackets util */
@@ -1559,7 +1559,7 @@
 
     /* megamark */
     .megamark { padding: 40px var(--pad) 16px; }
-    .megamark .word { white-space: normal; -webkit-text-stroke: 0.5px var(--line-strong); line-height: 1; margin-bottom: 6px; }
+    .megamark .word { white-space: normal; -webkit-text-stroke: 0.8px var(--fg-3); line-height: 1; margin-bottom: 6px; }
   }
 
   /* 480px – small phone */
