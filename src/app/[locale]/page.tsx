@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { TopBar, Nav } from '@/components/Header';
+import { SiteHeader } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { Fleet } from '@/components/Fleet';
@@ -74,8 +74,7 @@ export default async function HomePage({
         ]}
       />
 
-      <TopBar />
-      <Nav />
+      <SiteHeader transparent />
       <Hero />
       <Services initialOfferings={offerings ?? undefined} />
       <Fleet initialCategories={categories ?? undefined} />

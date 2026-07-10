@@ -8,8 +8,6 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   AZ: {
     hero_t1: 'Azərbaycan üzrə',
     hero_t2: 'Texnika İcarəsi.',
-    hero_t3: 'Kəsintisiz',
-    hero_t4: 'Proqres.',
     hero_sub:
       'Avtokran, forklift və hündürlük səbətlərinin peşəkar icarəsi — Azərbaycanın bütün bölgələrində. Təcrübəli operator heyəti ilə istənilən ünvana operativ çatdırılma.',
     hero_btn1: 'Texnika Bazası',
@@ -54,8 +52,6 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   RU: {
     hero_t1: 'По Азербайджану',
     hero_t2: 'Аренда Техники.',
-    hero_t3: 'Бесперебойный',
-    hero_t4: 'Прогресс.',
     hero_sub:
       'Профессиональная аренда автокранов, погрузчиков и подъемников по всему Азербайджану. Оперативная доставка с опытными операторами на любой объект.',
     hero_btn1: 'База Техники',
@@ -100,8 +96,6 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   EN: {
     hero_t1: 'Across Azerbaijan',
     hero_t2: 'Equipment Rental.',
-    hero_t3: 'Seamless',
-    hero_t4: 'Progress.',
     hero_sub:
       'Professional rental of mobile cranes, forklifts, and aerial platforms across all regions of Azerbaijan. Rapid delivery with an experienced operator team to any site.',
     hero_btn1: 'Equipment Base',

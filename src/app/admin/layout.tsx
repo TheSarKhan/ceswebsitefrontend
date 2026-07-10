@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { Barlow, Barlow_Condensed, JetBrains_Mono } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { AdminAuthProvider } from '@/lib/admin-auth';
 import { QueryProvider } from '@/components/QueryProvider';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -9,22 +9,10 @@ import { ToastProvider } from '@/components/admin/ToastProvider';
 import '../globals.css';
 import './admin.css';
 
-const barlowSans = Barlow({
+const poppins = Poppins({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-barlow',
-  display: 'swap',
-});
-const barlowDisplay = Barlow_Condensed({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['600', '700', '800'],
-  variable: '--font-barlow-condensed',
-  display: 'swap',
-});
-const jetMono = JetBrains_Mono({
-  subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['400', '500', '600'],
-  variable: '--font-jet-mono',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
   display: 'swap',
 });
 
@@ -42,7 +30,7 @@ export default function AdminRootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="az"
-      className={`${barlowSans.variable} ${barlowDisplay.variable} ${jetMono.variable}`}
+      className={poppins.variable}
       suppressHydrationWarning
     >
       <body className="admin-body" suppressHydrationWarning>

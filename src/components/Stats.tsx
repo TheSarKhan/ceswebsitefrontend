@@ -14,7 +14,6 @@ export function Stats() {
       <StaggerGroup className="stats-grid" stagger={0.1}>
         {items.map((s) => (
           <StaggerItem key={s.id} className="stat-cell">
-            <div className="id">▸ {s.id}</div>
             <div className="big">
               {s.val}
               <span className="sym">{s.sym}</span>

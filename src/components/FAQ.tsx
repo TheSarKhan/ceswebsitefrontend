@@ -35,13 +35,12 @@ export function FAQ({
         </Reveal>
 
         <StaggerGroup className="faq-list" stagger={0.05}>
-          {faqs.map((f, i) => {
+          {faqs.map((f) => {
             const tr = pickTr(f.translations, lang);
             return (
               <StaggerItem key={f.id}>
                 <details className="faq">
                   <summary>
-                    <span className="id">▸ {String(i + 1).padStart(2, '0')}</span>
                     <span className="q">{tr?.question}</span>
                     <span className="toggle">+</span>
                   </summary>

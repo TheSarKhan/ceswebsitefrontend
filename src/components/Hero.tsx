@@ -54,6 +54,18 @@ export function Hero() {
 
   return (
     <section className="hero hero--minimal" data-lang={lang}>
+      <div className="hero-video" aria-hidden="true">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/assets/video/hero-crane-poster.jpg"
+        >
+          <source src="/assets/video/hero-crane.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-video-overlay"></div>
+      </div>
       <div className="hero-grid grid-bg"></div>
       <div className="hero-glow" aria-hidden="true"></div>
 
@@ -74,13 +86,7 @@ export function Hero() {
         <div className="hero-grid-2col">
           <div className="hero-content">
             <motion.h1 variants={heroItem}>
-              <span>{t.hero_t1}</span>
-              <br />
-              <span className="stroke">{t.hero_t2}</span>
-              <br />
-              <span className="gold">{t.hero_t3}</span>
-              <br />
-              <span>{t.hero_t4}</span>
+              <span>{t.hero_t1}</span> <span className="stroke">{t.hero_t2}</span>
             </motion.h1>
             <motion.p className="hero-sub" variants={heroItem}>
               {t.hero_sub}
@@ -105,7 +111,6 @@ export function Hero() {
           >
             <motion.div className="hero-stat" variants={statItem}>
               <span className="bar" aria-hidden="true"></span>
-              <span className="num">01</span>
               <span className="val">
                 100<span className="unit">%</span>
               </span>
@@ -113,7 +118,6 @@ export function Hero() {
             </motion.div>
             <motion.div className="hero-stat" variants={statItem}>
               <span className="bar" aria-hidden="true"></span>
-              <span className="num">02</span>
               <span className="val">
                 25<span className="unit">+</span>
               </span>
@@ -121,7 +125,6 @@ export function Hero() {
             </motion.div>
             <motion.div className="hero-stat" variants={statItem}>
               <span className="bar" aria-hidden="true"></span>
-              <span className="num">03</span>
               <span className="val">
                 120<span className="unit">+</span>
               </span>
@@ -129,7 +132,6 @@ export function Hero() {
             </motion.div>
             <motion.div className="hero-stat" variants={statItem}>
               <span className="bar" aria-hidden="true"></span>
-              <span className="num">04</span>
               <span className="val">
                 6
                 <span className="unit">

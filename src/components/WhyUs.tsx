@@ -79,7 +79,6 @@ export function WhyUs() {
           <StaggerGroup className="why-list" stagger={0.06}>
             {items.map((it) => (
               <StaggerItem key={it.id} className="why-item">
-                <span className="id">▸ {it.id}</span>
                 <div>
                   <h4>{it.t}</h4>
                   <p>{it.d}</p>

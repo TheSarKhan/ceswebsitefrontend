@@ -3,31 +3,17 @@ import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { Barlow, Barlow_Condensed, JetBrains_Mono } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { QueryProvider } from '@/components/QueryProvider';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { routing } from '@/i18n/routing';
 import { alternatesFor, localeUrl, ogLocale, SITE_URL, type Locale } from '@/lib/seo';
 import '../globals.css';
 
-const barlowSans = Barlow({
+const poppins = Poppins({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-barlow',
-  display: 'swap',
-});
-
-const barlowDisplay = Barlow_Condensed({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['600', '700', '800'],
-  variable: '--font-barlow-condensed',
-  display: 'swap',
-});
-
-const jetMono = JetBrains_Mono({
-  subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['400', '500', '600'],
-  variable: '--font-jet-mono',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
   display: 'swap',
 });
 
@@ -134,10 +120,10 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${barlowSans.variable} ${barlowDisplay.variable} ${jetMono.variable}`}
+      className={poppins.variable}
       suppressHydrationWarning
     >
-      <body suppressHydrationWarning>
+      <body className="site-body" suppressHydrationWarning>
         <NextIntlClientProvider>
           <QueryProvider>
             <ThemeProvider>{children}</ThemeProvider>

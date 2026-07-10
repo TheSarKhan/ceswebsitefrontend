@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { Icon } from './icons';
@@ -22,65 +22,15 @@ export function Logo({ size = 44, priority = false }: { size?: number; priority?
   );
 }
 
-export function TopBar() {
+export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
   const { lang, setLang } = useLang();
   const { theme, toggleTheme } = useTheme();
-  const t = TRANSLATIONS[lang];
-  return (
-    <div className="topbar">
-      <div className="container topbar-inner">
-        <div className="topbar-left">
-          <span>
-            <span className="dot"></span>
-            {t.top_support}
-          </span>
-          <span className="hide-mobile" style={{ display: 'none' }}></span>
-        </div>
-        <div className="topbar-right">
-          <a href="tel:+994506829080" className="topbar-phone">
-            <Icon name="phone" size={12} stroke={2} />
-            +994 50 682 90 80
-          </a>
-          <a
-            href="mailto:sales@ces.com.az"
-            className="hide-sm"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
-          >
-            <Icon name="mail" size={12} stroke={2} />
-            sales@ces.com.az
-          </a>
-          <div className="lang-switch">
-            {(['AZ', 'RU', 'EN'] as Lang[]).map((L) => (
-              <button
-                key={L}
-                className={lang === L ? 'active' : ''}
-                onClick={() => setLang(L)}
-              >
-                {L}
-              </button>
-            ))}
-          </div>
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label={
-              theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
-            }
-            title={theme === 'light' ? 'Qaranlıq mod' : 'Gündüz mod'}
-          >
-            <Icon name={theme === 'light' ? 'moon' : 'sun'} size={13} stroke={1.5} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function Nav() {
-  const { lang } = useLang();
   const locale = useLocale();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
 
   useEffect(() => {
@@ -88,6 +38,28 @@ export function Nav() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isLangOpen) return;
+    const onClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, [isLangOpen]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const setHeaderHeightVar = () =>
+      document.documentElement.style.setProperty('--header-h', `${el.offsetHeight}px`);
+    setHeaderHeightVar();
+    const ro = new ResizeObserver(setHeaderHeightVar);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   // Anchor links use a locale-prefixed path so they keep working from any
@@ -105,10 +77,17 @@ export function Nav() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const cls = [
+    'nav',
+    isMenuOpen && 'menu-open',
+    transparent && 'nav--transparent',
+    scrolled && 'scrolled',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <header
-      className={`nav ${isMenuOpen ? 'menu-open' : ''} ${scrolled ? 'scrolled' : ''}`}
-    >
+    <header ref={ref} className={cls}>
       <div className="container nav-inner">
         <a href={`/${locale}`} className="nav-logo" onClick={closeMenu}>
           <span className="nav-logo-wrap">
@@ -125,6 +104,46 @@ export function Nav() {
         </nav>
 
         <div className="nav-cta">
+          <div className="lang-dropdown hide-sm" ref={langRef}>
+            <button
+              className="lang-dropdown-trigger"
+              onClick={() => setIsLangOpen((v) => !v)}
+              aria-haspopup="listbox"
+              aria-expanded={isLangOpen}
+            >
+              {lang}
+              <span className="chevron">▾</span>
+            </button>
+            {isLangOpen && (
+              <div className="lang-dropdown-menu" role="listbox">
+                {(['AZ', 'RU', 'EN'] as Lang[])
+                  .filter((L) => L !== lang)
+                  .map((L) => (
+                    <button
+                      key={L}
+                      role="option"
+                      aria-selected={false}
+                      onClick={() => {
+                        setLang(L);
+                        setIsLangOpen(false);
+                      }}
+                    >
+                      {L}
+                    </button>
+                  ))}
+              </div>
+            )}
+          </div>
+          <button
+            className="theme-toggle hide-sm"
+            onClick={toggleTheme}
+            aria-label={
+              theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+            }
+            title={theme === 'light' ? 'Qaranlıq mod' : 'Gündüz mod'}
+          >
+            <Icon name={theme === 'light' ? 'moon' : 'sun'} size={13} stroke={1.5} />
+          </button>
           <a
             href={anchor('contact')}
             className="btn btn-ghost hide-mobile"
@@ -152,15 +171,25 @@ export function Nav() {
 
       <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-links">
-          {links.map((l, i) => (
+          {links.map((l) => (
             <a key={l.href} href={l.href} onClick={closeMenu}>
-              <span className="num">0{i + 1}</span>
               <span className="lbl">{l.label}</span>
               <Icon name="arrow-right" size={20} />
             </a>
           ))}
         </div>
         <div className="mobile-menu-footer">
+          <div className="lang-switch">
+            {(['AZ', 'RU', 'EN'] as Lang[]).map((L) => (
+              <button
+                key={L}
+                className={lang === L ? 'active' : ''}
+                onClick={() => setLang(L)}
+              >
+                {L}
+              </button>
+            ))}
+          </div>
           <div className="contact-item">
             <Icon name="phone" size={16} />
             <a href="tel:+994506829080">+994 50 682 90 80</a>

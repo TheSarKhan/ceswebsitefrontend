@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { TopBar, Nav } from '@/components/Header';
+import { SiteHeader } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Contact } from '@/components/Contact';
 import { JsonLd } from '@/components/JsonLd';
@@ -161,8 +161,7 @@ export default async function RentalPage({
         ]}
       />
 
-      <TopBar />
-      <Nav />
+      <SiteHeader />
 
       <main className="rent-page">
         {/* ===== HERO ===== */}
