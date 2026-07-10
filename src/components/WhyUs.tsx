@@ -85,7 +85,7 @@ export function WhyUs() {
 
           <Reveal className="why-visual" delay={0.15}>
             <div className="why-visual-logo">
-              <Logo size={160} />
+              <Logo size={480} />
             </div>
             <div className="quote-overlay">
               <div className="q">
