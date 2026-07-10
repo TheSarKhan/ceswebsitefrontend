@@ -29,6 +29,9 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'stevensoncrane.com' },
+      // Hardcoded so dev builds (where NEXT_PUBLIC_API_BASE_URL is usually
+      // unset/localhost) can still render uploads served from prod data.
+      { protocol: 'https', hostname: 'ces.sarkhan.online' },
       ...(apiPattern ? [apiPattern] : []),
     ],
     formats: ['image/avif', 'image/webp'],
