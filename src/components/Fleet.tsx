@@ -80,11 +80,7 @@ export function Fleet({
     <section id="fleet" className="section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            {t.fleet_h1}
-            <br />
-            <span className="stroke">{t.fleet_h2}</span>
-          </h2>
+          <h2>{t.fleet_h1}</h2>
         </Reveal>
 
         {/* Tier 1 — categories */}

@@ -27,11 +27,6 @@ export function Projects({
             <br />
             <span className="stroke">{t.projects_h_stroke}</span>
           </h2>
-          <div className="meta">
-            2024 — 2026
-            <br />
-            {t.projects_meta}
-          </div>
         </Reveal>
 
         <StaggerGroup className="projects-grid" stagger={0.07}>

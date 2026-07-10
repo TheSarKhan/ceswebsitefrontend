@@ -29,12 +29,7 @@ export function Services({
     <section id="services" className="section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            {t.services_h}
-            <br />
-            <span className="stroke">{t.services_h_stroke}</span>
-          </h2>
-          <div className="meta">{t.services_meta}</div>
+          <h2>{t.services_h}</h2>
         </Reveal>
 
         <StaggerGroup className="services-grid">

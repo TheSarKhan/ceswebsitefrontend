@@ -20,18 +20,7 @@ export function FAQ({
     <section id="faq" className="section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            {t.faq_h}
-            <br />
-            <span className="stroke">
-              {lang === 'AZ' ? 'Suallar.' : lang === 'RU' ? 'Вопросы.' : 'Questions.'}
-            </span>
-          </h2>
-          <div className="meta">
-            {t.faq_meta}
-            <br />
-            +994 50 682 90 80
-          </div>
+          <h2>{t.faq_h}</h2>
         </Reveal>
 
         <StaggerGroup className="faq-list" stagger={0.05}>

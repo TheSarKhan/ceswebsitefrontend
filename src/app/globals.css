@@ -551,19 +551,9 @@
     padding-bottom: clamp(24px, 3vw, 48px);
   }
   .section-head {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 32px;
-    align-items: end;
     margin-bottom: clamp(18px, 2vw, 28px);
     padding-bottom: 0;
     border-bottom: 0;
-  }
-  .section-head .id {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.2em;
   }
   .section-head h2 {
     font-family: var(--font-display);
@@ -574,18 +564,6 @@
     text-transform: uppercase;
   }
   .section-head h2 .stroke { -webkit-text-stroke: 1.2px var(--fg); color: transparent; }
-  .section-head .meta {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--fg-3);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-align: right;
-  }
-  @media (max-width: 720px) {
-    .section-head { grid-template-columns: 1fr; gap: 16px; }
-    .section-head .meta { text-align: left; }
-  }
 
   /* ===== SERVICES ===== */
   .services-grid {
@@ -1023,15 +1001,6 @@
     color: var(--fg-2);
     line-height: 1.55;
   }
-  .how-step .corner-tag {
-    position: absolute;
-    top: 14px; right: 14px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--fg-3);
-    letter-spacing: 0.18em;
-  }
-
   /* ===== WHY US ===== */
   .why-layout {
     display: grid;
@@ -1380,14 +1349,6 @@
     padding: 48px 40px;
     background: var(--bg);
   }
-  .contact-form h3 {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.2em;
-    margin-bottom: 28px;
-    text-transform: uppercase;
-  }
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1484,29 +1445,6 @@
   }
   .footer-bottom .links { display: flex; gap: 20px; }
   .footer-bottom .links a:hover { color: var(--gold); }
-
-  /* big lockup at very end */
-  .megamark {
-    overflow: hidden;
-    border-top: 1px solid var(--line);
-    padding: 80px var(--pad) 30px;
-    background: var(--bg);
-  }
-  .megamark .word {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 15vw, 220px);
-    line-height: 0.82;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
-    text-align: center;
-    color: rgba(244, 241, 234, 0.03);
-    -webkit-text-stroke: 1.5px var(--fg-3);
-    white-space: nowrap;
-  }
-  .megamark .word.gold {
-    -webkit-text-stroke: 1.5px var(--gold);
-    color: rgba(201, 162, 75, 0.06);
-  }
 
   /* corner brackets util */
   .brackets { position: relative; }
@@ -1612,10 +1550,6 @@
     .footer { padding-top: 32px; }
     .footer-grid { gap: 24px; }
     .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
-
-    /* megamark */
-    .megamark { padding: 40px var(--pad) 16px; }
-    .megamark .word { white-space: normal; -webkit-text-stroke: 0.8px var(--fg-3); line-height: 1; margin-bottom: 6px; }
   }
 
   /* 480px – small phone */

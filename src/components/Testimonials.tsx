@@ -20,22 +20,7 @@ export function Testimonials({
     <section className="section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            {t.test_h}
-            <br />
-            <span className="stroke">
-              {lang === 'AZ'
-                ? 'Etibarlı əməkdaşlıq.'
-                : lang === 'RU'
-                  ? 'Надежное партнерство.'
-                  : 'Reliable partnership.'}
-            </span>
-          </h2>
-          <div className="meta">
-            {t.test_meta}
-            <br />
-            2024 — 2026
-          </div>
+          <h2>{t.test_h}</h2>
         </Reveal>
 
         <StaggerGroup className="test-grid" stagger={0.07}>

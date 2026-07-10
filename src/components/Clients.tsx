@@ -17,29 +17,8 @@ export function Clients({
   return (
     <section className="section-pad" style={{ background: 'var(--bg-2)' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            marginBottom: 16,
-            flexWrap: 'wrap',
-            gap: 16,
-          }}
-        >
-          <div className="eyebrow">▸ Bizə güvənənlər · 80+ korporativ müştəri</div>
-          <a
-            href="#"
-            className="mono"
-            style={{
-              fontSize: 11,
-              color: 'var(--gold)',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Hamısına bax →
-          </a>
+        <div className="section-head">
+          <h2>Bizə güvənənlər</h2>
         </div>
       </div>
 

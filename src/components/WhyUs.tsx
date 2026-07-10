@@ -65,14 +65,7 @@ export function WhyUs() {
     <section id="why" className="section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            {t.why_h}
-            <br />
-            <span className="stroke">
-              {lang === 'AZ' ? 'Beş səbəb.' : lang === 'RU' ? 'Пять причин.' : 'Five reasons.'}
-            </span>
-          </h2>
-          <div className="meta">{t.why_meta}</div>
+          <h2>{t.why_h}</h2>
         </Reveal>
 
         <div className="why-layout">

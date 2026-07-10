@@ -70,15 +70,7 @@ export function Contact() {
     <section id="contact" className="contact section-pad">
       <div className="container">
         <Reveal className="section-head">
-          <h2>
-            Sifariş et.
-            <br />
-            <span className="stroke">İş başlasın.</span>
-          </h2>
-          <div className="meta">
-            Cavab vaxtı
-            <br />≤ 30 dəqiqə
-          </div>
+          <h2>Əlaqəyə keçin</h2>
         </Reveal>
 
         <Reveal className="contact-grid" delay={0.05}>
@@ -107,14 +99,9 @@ export function Contact() {
               <span className="lbl">Ünvan</span>
               <span className="val">Bakı, Azərbaycan</span>
             </div>
-            <div className="channel">
-              <span className="lbl">Saatlar</span>
-              <span className="val">24 / 7</span>
-            </div>
           </div>
 
           <form className="contact-form" onSubmit={onSubmit}>
-            <h3>▸ Pulsuz qiymət təklifi</h3>
             <div className="form-grid">
               <div className="form-field">
                 <label>Ad, Soyad</label>
