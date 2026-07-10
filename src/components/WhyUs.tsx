@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { Icon } from './icons';
+import { Logo } from './Header';
 import { useLang } from '@/lib/lang';
 import { TRANSLATIONS } from '@/lib/translations';
 import { Reveal, StaggerGroup, StaggerItem } from './motion';
@@ -84,13 +84,9 @@ export function WhyUs() {
           </StaggerGroup>
 
           <Reveal className="why-visual" delay={0.15}>
-            <Image
-              src="https://ces.sarkhan.online/uploads/why-visual.jpg"
-              alt="Construction machinery at work"
-              fill
-              sizes="(max-width: 900px) 100vw, 50vw"
-              style={{ objectFit: 'cover' }}
-            />
+            <div className="why-visual-logo">
+              <Logo size={160} />
+            </div>
             <div className="quote-overlay">
               <div className="q">
                 &ldquo;
@@ -103,7 +99,7 @@ export function WhyUs() {
               </div>
               <div
                 className="mono"
-                style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em' }}
+                style={{ fontSize: 11, color: 'var(--fg-2)', letterSpacing: '0.1em' }}
               >
                 — CES{' '}
                 {lang === 'AZ'
