@@ -25,21 +25,21 @@ type LocaleCopy = {
 
 const COPY: Record<Locale, LocaleCopy> = {
   az: {
-    title: 'CES — Bakıda peşəkar texnika icarəsi',
+    title: 'CES — Sürətli və etibarlı texnika icarəsi',
     description:
-      'Sənaye və tikinti layihələri üçün avtokran, forklift, yüksəklik səbəti, ekskavator və digər ağır texnikanın peşəkar icarəsi. Bakı və Sumqayıt, Azərbaycan.',
+      'Sənaye və tikinti layihələri üçün avtokran, forklift, yüksəklik səbəti, ekskavator və digər ağır texnikanın peşəkar icarəsi. Azərbaycanın bütün bölgələrində, operatorla birlikdə.',
     siteName: 'CES — Construction Equipment Services',
   },
   ru: {
-    title: 'CES — Профессиональная аренда техники в Баку',
+    title: 'CES — Быстрая и надёжная аренда техники',
     description:
-      'Аренда автокранов, погрузчиков, подъемников и другой тяжелой техники для промышленных и строительных проектов. Баку и Сумгаит, Азербайджан.',
+      'Аренда автокранов, погрузчиков, подъемников и другой тяжелой техники для промышленных и строительных проектов. По всему Азербайджану, с оператором.',
     siteName: 'CES — Construction Equipment Services',
   },
   en: {
-    title: 'CES — Construction Equipment Rental in Baku',
+    title: 'CES — Fast and Reliable Equipment Rental',
     description:
-      'Professional rental of cranes, forklifts, lifts, excavators and heavy machinery for industrial and construction projects in Baku and Sumgait, Azerbaijan.',
+      'Professional rental of cranes, forklifts, lifts, excavators and heavy machinery for industrial and construction projects across Azerbaijan, operator included.',
     siteName: 'CES — Construction Equipment Services',
   },
 };

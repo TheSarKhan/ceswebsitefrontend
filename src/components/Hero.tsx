@@ -51,15 +51,29 @@ export function Placeholder({
 export function Hero() {
   const { lang } = useLang();
   const t = TRANSLATIONS[lang];
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  // Mobil brauzerlərdə React-in `muted` atributu bəzən DOM-a düşmür və
+  // autoplay bloklanır (yalnız poster görünür). muted-i property kimi zorla
+  // təyin edib play() çağırırıq ki, video telefonda da arxa fon kimi oynasın.
+  React.useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    const p = v.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  }, []);
 
   return (
     <section className="hero hero--minimal" data-lang={lang}>
       <div className="hero-video" aria-hidden="true">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
           poster="/assets/video/hero-crane-poster.jpg"
         >
           <source src="/assets/video/hero-crane.mp4" type="video/mp4" />
