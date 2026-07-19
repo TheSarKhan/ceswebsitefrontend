@@ -350,13 +350,18 @@
     flex-direction: column;
   }
   @media (max-width: 900px) {
-    .hero { min-height: 0; }
+    /* The hero video now renders on phones too, so keep a real hero height.
+       svh avoids the mobile address-bar jump that 100vh causes. */
+    .hero { min-height: 80vh; min-height: 80svh; }
   }
   .hero-video {
     position: absolute;
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    /* Poster as a fallback layer so the hero still has imagery when the video
+       element itself is hidden (reduced motion) or hasn't loaded yet. */
+    background: url('/assets/video/hero-crane-poster.jpg') center / cover no-repeat;
   }
   .hero-video video {
     width: 100%;
@@ -368,9 +373,6 @@
     inset: 0;
     background:
       linear-gradient(180deg, color-mix(in srgb, var(--bg) 55%, transparent) 0%, color-mix(in srgb, var(--bg) 45%, transparent) 40%, color-mix(in srgb, var(--bg) 60%, transparent) 75%, var(--bg) 100%);
-  }
-  @media (max-width: 900px) {
-    .hero-video { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-video video { display: none; }

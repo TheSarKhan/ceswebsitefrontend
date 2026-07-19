@@ -6,7 +6,7 @@ export type Lang = 'AZ' | 'RU' | 'EN';
 
 export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   AZ: {
-    hero_t1: 'Azərbaycan üzrə',
+    hero_t1: 'Sürətli və etibarlı',
     hero_t2: 'Texnika İcarəsi.',
     hero_sub:
       'Avtokran, forklift və hündürlük səbətlərinin peşəkar icarəsi — Azərbaycanın bütün bölgələrində. Təcrübəli operator heyəti ilə istənilən ünvana operativ çatdırılma.',
@@ -42,7 +42,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     footer_copy: 'Bütün hüquqlar qorunur.',
   },
   RU: {
-    hero_t1: 'По Азербайджану',
+    hero_t1: 'Быстрая и надёжная',
     hero_t2: 'Аренда Техники.',
     hero_sub:
       'Профессиональная аренда автокранов, погрузчиков и подъемников по всему Азербайджану. Оперативная доставка с опытными операторами на любой объект.',
@@ -78,7 +78,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     footer_copy: 'Все права защищены.',
   },
   EN: {
-    hero_t1: 'Across Azerbaijan',
+    hero_t1: 'Fast and Reliable',
     hero_t2: 'Equipment Rental.',
     hero_sub:
       'Professional rental of mobile cranes, forklifts, and aerial platforms across all regions of Azerbaijan. Rapid delivery with an experienced operator team to any site.',
