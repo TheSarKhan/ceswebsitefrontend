@@ -327,6 +327,12 @@
     flex-direction: column;
     gap: 16px;
   }
+  .mobile-menu-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
   .mobile-menu-footer .contact-item {
     display: flex;
     align-items: center;

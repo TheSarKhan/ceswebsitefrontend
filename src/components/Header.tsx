@@ -179,16 +179,28 @@ export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
           ))}
         </div>
         <div className="mobile-menu-footer">
-          <div className="lang-switch">
-            {(['AZ', 'RU', 'EN'] as Lang[]).map((L) => (
-              <button
-                key={L}
-                className={lang === L ? 'active' : ''}
-                onClick={() => setLang(L)}
-              >
-                {L}
-              </button>
-            ))}
+          <div className="mobile-menu-controls">
+            <div className="lang-switch">
+              {(['AZ', 'RU', 'EN'] as Lang[]).map((L) => (
+                <button
+                  key={L}
+                  className={lang === L ? 'active' : ''}
+                  onClick={() => setLang(L)}
+                >
+                  {L}
+                </button>
+              ))}
+            </div>
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={
+                theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+              }
+              title={theme === 'light' ? 'Qaranlıq mod' : 'Gündüz mod'}
+            >
+              <Icon name={theme === 'light' ? 'moon' : 'sun'} size={13} stroke={1.5} />
+            </button>
           </div>
           <div className="contact-item">
             <Icon name="phone" size={16} />
