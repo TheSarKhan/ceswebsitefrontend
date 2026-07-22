@@ -163,15 +163,9 @@ export function Hero() {
           {[...Array(2)].map((_, i) => (
             <React.Fragment key={i}>
               <span className="gold">⬢</span>
-              <span>AVTOKRAN — 40t / 80t / 120t</span>
+              <span>FORKLİFT — YOL KƏNARI VƏ DİZEL</span>
               <span className="dot">/</span>
-              <span>FORKLIFT — 2.5t / 5t / 7t</span>
-              <span className="dot">/</span>
-              <span>SƏBƏT — 18m / 26m / 42m</span>
-              <span className="dot">/</span>
-              <span>EKSKAVATOR</span>
-              <span className="dot">/</span>
-              <span>BULDOZER</span>
+              <span>SƏBƏT — QAYÇI VƏ ƏRAZİ TİPLİ</span>
               <span className="dot">/</span>
               <span className="gold">OPERATORLA ÇATDIRILMA</span>
               <span className="dot">/</span>

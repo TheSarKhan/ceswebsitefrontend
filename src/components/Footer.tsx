@@ -22,11 +22,8 @@ export function Footer() {
           </div>
           <div className="footer-col">
             <h5>{lang === 'AZ' ? 'Xidmətlər' : lang === 'RU' ? 'Услуги' : 'Services'}</h5>
-            <a href={anchor('fleet')}>{lang === 'AZ' ? 'Avtokran' : lang === 'RU' ? 'Автокран' : 'Mobile Crane'}</a>
             <a href={anchor('fleet')}>{lang === 'AZ' ? 'Forklift' : lang === 'RU' ? 'Погрузчик' : 'Forklift'}</a>
             <a href={anchor('fleet')}>{lang === 'AZ' ? 'Səbət' : lang === 'RU' ? 'Вышка' : 'Aerial Lift'}</a>
-            <a href={anchor('fleet')}>{lang === 'AZ' ? 'Ekskavator' : lang === 'RU' ? 'Экскаватор' : 'Excavator'}</a>
-            <a href={anchor('fleet')}>{lang === 'AZ' ? 'Buldozer' : lang === 'RU' ? 'Бульдозер' : 'Bulldozer'}</a>
           </div>
           <div className="footer-col">
             <h5>{t.footer_links}</h5>
