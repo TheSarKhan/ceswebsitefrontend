@@ -92,8 +92,10 @@ export function Contact() {
               Texnika <span className="gold">lazımdır?</span>
             </h2>
             <p>
-              Bir zəng — bir saatlıq cavab. Layihənizin tələbini bildirin, size uyğun
-              texnika variantlarını və qiymət təklifini 30 dəqiqə ərzində göndərək.
+              Layihənizin tələblərini bizə bildirin — mütəxəssislərimiz ehtiyacınıza
+              uyğun texnika variantlarını seçib fərdi qiymət təklifi hazırlayacaq.
+              Peşəkar komandamız planlaşdırmadan tədarükə qədər hər mərhələdə etibarlı
+              dəstək göstərir.
             </p>
 
             <div className="channel">
