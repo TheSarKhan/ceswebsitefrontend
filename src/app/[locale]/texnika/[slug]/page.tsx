@@ -118,10 +118,6 @@ export default async function TexnikaPage({ params }: { params: Promise<Params> 
 
             <div className="tx-hero-info">
               {tr?.badge && <span className="tx-badge">{tr.badge}</span>}
-              <div className="tx-eyebrow">
-                {(subTr?.name ?? item.subcategory.slug)}
-                {item.modelNumber ? ` · ${item.modelNumber}` : ''}
-              </div>
               <h1 className="tx-title">{name}</h1>
               {item.price && (
                 <div className="tx-price">
@@ -135,8 +131,7 @@ export default async function TexnikaPage({ params }: { params: Promise<Params> 
           </div>
 
           {paragraphs.length > 1 && (
-            <section className="tx-section">
-              <h2>{t.desc}</h2>
+            <section className="tx-section tx-desc-section">
               <div className="tx-desc">
                 {paragraphs.slice(1).map((p, i) => (
                   <p key={i}>{p}</p>
