@@ -118,11 +118,6 @@ export default async function LayihePage({ params }: { params: Promise<Params> }
             <TexnikaGallery images={images} alt={title} />
 
             <div className="tx-hero-info">
-              {(project.year || tr?.category) && (
-                <div className="tx-eyebrow">
-                  {[tr?.category, project.year].filter(Boolean).join(' · ')}
-                </div>
-              )}
               <h1 className="tx-title">{title}</h1>
               {paragraphs.length > 0 ? (
                 <div className="tx-desc-scroll">
