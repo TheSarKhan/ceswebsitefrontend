@@ -125,20 +125,16 @@ export default async function TexnikaPage({ params }: { params: Promise<Params> 
                   {item.priceUnit && <span className="tx-price-unit"> /{item.priceUnit}</span>}
                 </div>
               )}
-              {paragraphs[0] && <p className="tx-lead">{paragraphs[0]}</p>}
+              {paragraphs.length > 0 && (
+                <div className="tx-desc-scroll">
+                  {paragraphs.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+              )}
               <TexnikaOrderActions equipmentName={orderName} lang={lang} />
             </div>
           </div>
-
-          {paragraphs.length > 1 && (
-            <section className="tx-section tx-desc-section">
-              <div className="tx-desc">
-                {paragraphs.slice(1).map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-            </section>
-          )}
 
           {item.specs.length > 0 && (
             <section className="tx-section tx-specs-section">
