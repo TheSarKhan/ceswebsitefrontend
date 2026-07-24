@@ -97,19 +97,33 @@ export function Contact() {
             </p>
 
             <div className="channel">
-              <span className="lbl">Tel.</span>
+              <span className="lbl" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
+                </svg>
+              </span>
               <a className="val gold" href="tel:+994506829080">
                 +994 50 682 90 80
               </a>
             </div>
             <div className="channel">
-              <span className="lbl">E-poçt</span>
+              <span className="lbl" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 6 9-6" />
+                </svg>
+              </span>
               <a className="val" href="mailto:sales@ces.com.az">
                 sales@ces.com.az
               </a>
             </div>
             <div className="channel">
-              <span className="lbl">Ünvan</span>
+              <span className="lbl" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z" />
+                  <circle cx="12" cy="10" r="2.5" />
+                </svg>
+              </span>
               <span className="val">Bakı, Azərbaycan</span>
             </div>
           </div>

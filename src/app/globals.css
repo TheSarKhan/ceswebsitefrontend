@@ -1375,19 +1375,27 @@
   }
   .contact-info .channel {
     display: grid;
-    grid-template-columns: 60px 1fr;
+    grid-template-columns: 44px 1fr;
     gap: 16px;
+    align-items: center;
     padding: 18px 0;
     border-bottom: 1px solid var(--line);
   }
   .contact-info .channel:first-of-type { border-top: 1px solid var(--line); }
   .contact-info .channel .lbl {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--fg-3);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--gold);
+    background: var(--gold-soft);
+  }
+  .contact-info .channel .lbl svg {
+    width: 20px;
+    height: 20px;
   }
   .contact-info .channel .val {
     font-family: var(--font-display);
