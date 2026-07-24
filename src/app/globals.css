@@ -1916,7 +1916,9 @@
 .card-a .card-title-link:hover h4 { color: var(--gold); }
 
 /* ===== Technique detail page (/texnika/[slug]) ===== */
-.tx-page { padding: 120px 0 80px; }
+/* body.site-body already offsets the fixed header (--header-h); only a small
+   gap is needed here, not another full header's worth. */
+.tx-page { padding: 28px 0 80px; }
 .tx-crumbs {
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
   font-family: var(--font-mono); font-size: 12px; color: var(--fg-3);
