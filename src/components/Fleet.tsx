@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useFleetCategories, useFleetSubcategory } from '@/lib/hooks';
 import { pickTr, type FleetItemCard } from '@/lib/types';
 import { useLang } from '@/lib/lang';
+import { useOrder } from '@/contexts/OrderContext';
 import { TRANSLATIONS, type Lang } from '@/lib/translations';
 import { Icon } from './icons';
 import { Placeholder } from './Hero';
@@ -172,6 +173,8 @@ export function Fleet({
 function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
   const tr = pickTr(item.translations, lang);
   const unit = formatUnit(item.priceUnit, lang);
+  const { setSelectedEquipment } = useOrder();
+  const equipmentName = tr?.name ?? item.modelNumber ?? item.slug;
 
   return (
     <article className="card-a">
@@ -213,7 +216,11 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
               )}
             </div>
           )}
-          <a className="req" href="#contact">
+          <a
+            className="req"
+            href="#contact"
+            onClick={() => setSelectedEquipment(equipmentName)}
+          >
             {lang === 'AZ' ? 'Sifariş et' : lang === 'RU' ? 'Заказать' : 'Order Now'} →
           </a>
         </div>

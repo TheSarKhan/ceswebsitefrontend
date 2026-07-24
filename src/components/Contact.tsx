@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Icon } from './icons';
 import { Reveal } from './motion';
 import { apiFetch, ApiError } from '@/lib/api';
+import { useOrder } from '@/contexts/OrderContext';
 
 type FormState = {
   name: string;
@@ -31,6 +32,18 @@ export function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { selectedEquipment, setSelectedEquipment } = useOrder();
+
+  // A fleet-card "Sifariş et" click drops the item's name here — prefill the
+  // message field so the sales team knows which unit the lead is asking about.
+  useEffect(() => {
+    if (!selectedEquipment) return;
+    setForm((prev) => ({
+      ...prev,
+      message: `Sifariş etmək istədiyim texnika: ${selectedEquipment}`,
+    }));
+    setSelectedEquipment(null);
+  }, [selectedEquipment, setSelectedEquipment]);
 
   const update = <K extends keyof FormState>(key: K) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,

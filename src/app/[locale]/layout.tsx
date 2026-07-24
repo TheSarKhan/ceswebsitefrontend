@@ -6,6 +6,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { Poppins } from 'next/font/google';
 import { QueryProvider } from '@/components/QueryProvider';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { OrderProvider } from '@/contexts/OrderContext';
 import { routing } from '@/i18n/routing';
 import { alternatesFor, localeUrl, ogLocale, SITE_URL, type Locale } from '@/lib/seo';
 import '../globals.css';
@@ -126,7 +127,9 @@ export default async function LocaleLayout({
       <body className="site-body" suppressHydrationWarning>
         <NextIntlClientProvider>
           <QueryProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <OrderProvider>{children}</OrderProvider>
+            </ThemeProvider>
           </QueryProvider>
         </NextIntlClientProvider>
       </body>
