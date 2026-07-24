@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useFleetCategories, useFleetSubcategory } from '@/lib/hooks';
 import { pickTr, type FleetItemCard } from '@/lib/types';
 import { useLang } from '@/lib/lang';
@@ -175,10 +176,11 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
   const unit = formatUnit(item.priceUnit, lang);
   const { setSelectedEquipment } = useOrder();
   const equipmentName = tr?.name ?? item.modelNumber ?? item.slug;
+  const href = `/${lang.toLowerCase()}/texnika/${item.slug}`;
 
   return (
     <article className="card-a">
-      <div className="img">
+      <Link href={href} className="img" aria-label={equipmentName}>
         {tr?.badge && <span className="badge">{tr.badge}</span>}
         {item.image ? (
           <Image
@@ -191,9 +193,9 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
         ) : (
           <Placeholder label={item.modelNumber ?? item.slug} />
         )}
-      </div>
+      </Link>
       <div className="body">
-        <h4>{tr?.name}</h4>
+        <Link href={href} className="card-title-link"><h4>{tr?.name}</h4></Link>
         {tr?.description && <p className="card-desc">{tr.description}</p>}
         <div className="foot">
           {item.price && (
