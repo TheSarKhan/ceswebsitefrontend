@@ -2032,9 +2032,11 @@
 
 /* Print / PDF: strip chrome, show a clean spec sheet */
 @media print {
-  .site-header, .site-footer, footer, .tx-crumbs, .tx-actions, .tx-print-hide, .lang-switch { display: none !important; }
+  header, .nav, footer, .footer, .tx-crumbs, .tx-actions, .tx-print-hide, .lang-switch { display: none !important; }
   .tx-page { padding: 0; }
   .tx-hero { grid-template-columns: 1fr 1fr; }
+  /* let the full description print instead of being clipped by the scroll box */
+  .tx-desc-scroll { max-height: none !important; overflow: visible !important; }
   body { background: #fff; color: #000; }
-  .tx-title, .tx-specs td, .tx-desc p { color: #000; }
+  .tx-title, .tx-specs td, .tx-desc p, .tx-desc-scroll p { color: #000; }
 }
