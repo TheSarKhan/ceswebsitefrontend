@@ -153,9 +153,11 @@ export function TexnikaOrderActions({
       <a className="btn btn-ghost" href={waHref} target="_blank" rel="noopener noreferrer">
         {t.whatsapp}
       </a>
-      <button type="button" className="btn btn-ghost tx-print-hide" onClick={() => window.print()}>
-        {t.pdf}
-      </button>
+      {!isProject && (
+        <button type="button" className="btn btn-ghost tx-print-hide" onClick={() => window.print()}>
+          {t.pdf}
+        </button>
+      )}
 
       {open && (
         <div className="tx-modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
