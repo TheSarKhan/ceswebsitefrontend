@@ -1512,13 +1512,14 @@
 .admin-reorder-row:hover { border-color: var(--line-strong); }
 .admin-drag-handle {
   cursor: grab;
-  border: 0;
-  background: transparent;
-  color: var(--fg-3);
-  font-size: 18px;
-  line-height: 1;
-  padding: 4px 6px;
-  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: var(--bg-3);
+  color: var(--fg-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 6px;
   /* Required so pointer-drag works on touch and doesn't scroll the page. */
   touch-action: none;
   flex: 0 0 auto;
@@ -1652,3 +1653,30 @@
   border-top: 1px solid var(--line);
 }
 .admin-modal-foot-spacer { flex: 1 1 auto; }
+
+/* ── Cropper.js editor modal extras ── */
+.admin-modal-wide { max-width: 720px; }
+.admin-crop-stage {
+  min-height: 220px;
+  max-height: 64vh;
+  overflow: hidden;
+}
+.admin-cropper-img {
+  display: block;
+  max-width: 100%;
+  max-height: 56vh;
+}
+/* Two stacked control rows (aspect presets + tools) instead of one row. */
+.admin-crop-controls {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+.admin-crop-aspects,
+.admin-crop-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.admin-chip { padding: 4px 12px; font-size: 11px; }
+.admin-chip.active { border-color: var(--gold); color: var(--gold); }

@@ -186,6 +186,7 @@ export function ImageUploadField({
 
       {editSrc && (
         <ImageCropModal
+          key={editSrc}
           src={editSrc}
           crossOrigin={editRemote}
           busy={uploading}
