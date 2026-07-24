@@ -198,7 +198,14 @@ export function FleetItemForm({
         }
         fields={[
           { name: 'name', label: 'Ad', required: true, maxLength: 256 },
-          { name: 'description', label: 'Təsvir', type: 'textarea', maxLength: 1024 },
+          {
+            name: 'description',
+            label: 'Haqqında (ətraflı təsvir)',
+            hint: 'Saytda texnikanın detal səhifəsində göstərilir. Uzun mətn yazmaq olar (~4000 simvol).',
+            type: 'textarea',
+            maxLength: 4000,
+            rows: 10,
+          },
           { name: 'badge', label: 'Badge (məs. POPULYAR SEÇİM)', maxLength: 64 },
         ]}
       />

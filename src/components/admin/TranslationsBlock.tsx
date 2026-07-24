@@ -17,6 +17,10 @@ export type FieldDef = {
   maxLength?: number;
   required?: boolean;
   placeholder?: string;
+  /** visible rows for a textarea (taller = more room for long text) */
+  rows?: number;
+  /** small helper line under the label */
+  hint?: string;
 };
 
 type Values = Record<LangCode, Record<string, string>>;
@@ -67,6 +71,11 @@ export function TranslationsBlock({
                 {f.label}
                 {f.required && <span style={{ color: 'var(--gold)' }}> *</span>}
               </label>
+              {f.hint && (
+                <div style={{ fontSize: 11, color: 'var(--fg-3)', marginTop: -2, marginBottom: 2 }}>
+                  {f.hint}
+                </div>
+              )}
               {f.type === 'textarea' ? (
                 <textarea
                   id={id}
@@ -75,6 +84,8 @@ export function TranslationsBlock({
                   maxLength={f.maxLength}
                   required={f.required}
                   placeholder={f.placeholder}
+                  rows={f.rows}
+                  style={f.rows ? { minHeight: f.rows * 22 } : undefined}
                 />
               ) : (
                 <input
