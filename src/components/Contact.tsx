@@ -32,9 +32,13 @@ const EMPTY: FormState = {
 };
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
+type RequestMode = 'order' | 'inquiry';
+
+const INQUIRY_MARKER = 'Ümumi sorğu';
 
 export function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY);
+  const [mode, setMode] = useState<RequestMode>('order');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { selectedOrder, setSelectedOrder } = useOrder();
@@ -59,6 +63,7 @@ export function Contact() {
       selectedOrder.category && categoryNames.includes(selectedOrder.category)
         ? selectedOrder.category
         : OTHER_OPTION;
+    setMode('order');
     setForm((prev) => ({
       ...prev,
       equipmentType: matchedType,
@@ -76,6 +81,7 @@ export function Contact() {
     setStatus('submitting');
     setErrorMessage(null);
     try {
+      const isOrder = mode === 'order';
       await apiFetch('/api/v1/public/quote', {
         method: 'POST',
         body: JSON.stringify({
@@ -83,8 +89,8 @@ export function Contact() {
           email: form.email || null,
           phone: form.phone,
           company: form.company || null,
-          equipmentType: form.equipmentType || null,
-          duration: form.duration || null,
+          equipmentType: isOrder ? form.equipmentType || null : INQUIRY_MARKER,
+          duration: isOrder ? form.duration || null : null,
           location: null,
           message: form.message || null,
         }),
@@ -153,6 +159,27 @@ export function Contact() {
           </div>
 
           <form className="contact-form" onSubmit={onSubmit}>
+            <div className="request-toggle" role="tablist" aria-label="Sorğu növü">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mode === 'order'}
+                className={mode === 'order' ? 'active' : ''}
+                onClick={() => setMode('order')}
+              >
+                Texnika sifarişi
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mode === 'inquiry'}
+                className={mode === 'inquiry' ? 'active' : ''}
+                onClick={() => setMode('inquiry')}
+              >
+                Ümumi sorğu / mesaj
+              </button>
+            </div>
+
             <div className="form-grid">
               <div className="form-field">
                 <label>Ad, Soyad</label>
@@ -192,29 +219,38 @@ export function Contact() {
                   onChange={update('email')}
                 />
               </div>
-              <div className="form-field">
-                <label>Texnika növü</label>
-                <select value={form.equipmentType} onChange={update('equipmentType')}>
-                  <option value="">Seçin</option>
-                  {categoryNames.map((name) => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                  <option value={OTHER_OPTION}>{OTHER_OPTION}</option>
-                </select>
-              </div>
-              <div className="form-field">
-                <label>İcarə müddəti</label>
-                <select value={form.duration} onChange={update('duration')}>
-                  <option>1 gün</option>
-                  <option>3-7 gün</option>
-                  <option>1 ay</option>
-                  <option>3+ ay</option>
-                </select>
-              </div>
+              {mode === 'order' && (
+                <>
+                  <div className="form-field">
+                    <label>Texnika növü</label>
+                    <select value={form.equipmentType} onChange={update('equipmentType')}>
+                      <option value="">Seçin</option>
+                      {categoryNames.map((name) => (
+                        <option key={name} value={name}>{name}</option>
+                      ))}
+                      <option value={OTHER_OPTION}>{OTHER_OPTION}</option>
+                    </select>
+                  </div>
+                  <div className="form-field">
+                    <label>İcarə müddəti</label>
+                    <select value={form.duration} onChange={update('duration')}>
+                      <option>1 gün</option>
+                      <option>3-7 gün</option>
+                      <option>1 ay</option>
+                      <option>3+ ay</option>
+                    </select>
+                  </div>
+                </>
+              )}
               <div className="form-field full">
-                <label>Layihə təfərrüatları</label>
+                <label>{mode === 'order' ? 'Layihə təfərrüatları' : 'Mesajınız *'}</label>
                 <textarea
-                  placeholder="Obyekt ünvanı, iş növü, başlama tarixi və s."
+                  placeholder={
+                    mode === 'order'
+                      ? 'Obyekt ünvanı, iş növü, başlama tarixi və s.'
+                      : 'Sualınızı və ya mesajınızı yazın…'
+                  }
+                  required={mode === 'inquiry'}
                   value={form.message}
                   onChange={update('message')}
                 ></textarea>
@@ -253,7 +289,11 @@ export function Contact() {
                 className="btn btn-primary form-submit"
                 disabled={status === 'submitting'}
               >
-                {status === 'submitting' ? 'Göndərilir…' : 'Sifarişi göndər'}
+                {status === 'submitting'
+                  ? 'Göndərilir…'
+                  : mode === 'order'
+                    ? 'Sifarişi göndər'
+                    : 'Mesajı göndər'}
                 <Icon name="arrow-right" size={14} stroke={2.5} />
               </button>
             </div>
