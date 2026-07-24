@@ -29,40 +29,53 @@ type Props = {
 
 const ROTATABLE = /^image\/(jpeg|png|webp)$/;
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+function loadImage(src: string, crossOrigin = false): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    if (crossOrigin) img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error('Şəkil oxunmadı'));
     img.src = src;
   });
 }
 
-// Bake the chosen rotation into the bytes we upload, so what the admin previews
-// is exactly what gets stored. Non-raster types (svg/gif) are sent untouched.
-async function rotatedBlob(file: File, deg: number): Promise<Blob> {
-  if (deg % 360 === 0 || !ROTATABLE.test(file.type)) return file;
-  const url = URL.createObjectURL(file);
+// Draw the image rotated and export the requested MIME type. Throws a
+// SecurityError if the source canvas is cross-origin-tainted.
+async function canvasRotate(
+  img: HTMLImageElement,
+  deg: number,
+  type: string,
+): Promise<Blob> {
+  const swap = deg % 180 !== 0;
+  const canvas = document.createElement('canvas');
+  canvas.width = swap ? img.naturalHeight : img.naturalWidth;
+  canvas.height = swap ? img.naturalWidth : img.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Kətan yaradılmadı');
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate((deg * Math.PI) / 180);
+  ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+  return await new Promise<Blob>((resolve, reject) =>
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error('Şəkil emal olunmadı'))),
+      type,
+      0.92,
+    ),
+  );
+}
+
+function typeFromUrl(url: string): string {
+  if (/\.png(\?|$)/i.test(url)) return 'image/png';
+  if (/\.webp(\?|$)/i.test(url)) return 'image/webp';
+  return 'image/jpeg';
+}
+
+function filenameFromUrl(url: string): string {
   try {
-    const img = await loadImage(url);
-    const swap = deg % 180 !== 0;
-    const canvas = document.createElement('canvas');
-    canvas.width = swap ? img.naturalHeight : img.naturalWidth;
-    canvas.height = swap ? img.naturalWidth : img.naturalHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return file;
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate((deg * Math.PI) / 180);
-    ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
-    return await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error('Şəkil emal olunmadı'))),
-        file.type,
-        0.92,
-      ),
-    );
-  } finally {
-    URL.revokeObjectURL(url);
+    const path = new URL(url, 'http://x').pathname;
+    return path.split('/').pop() || 'image';
+  } catch {
+    return 'image';
   }
 }
 
@@ -80,20 +93,28 @@ export function ImageUploadField({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // A picked-but-not-yet-uploaded file. While this is set, we show the review
-  // panel instead of committing the raw file straight to the server.
+  // A newly picked file (not yet uploaded).
   const [pendingFile, setPendingFile] = useState<File | null>(null);
-  const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null); // object URL
+  // True when editing the already-saved `value` in place (no new file yet).
+  const [editingExisting, setEditingExisting] = useState(false);
   const [rotation, setRotation] = useState(0); // 0 | 90 | 180 | 270
 
-  // Revoke the object URL when it changes or the component unmounts.
+  // Revoke the object URL when it changes / unmounts.
   useEffect(() => {
     return () => {
       if (pendingUrl) URL.revokeObjectURL(pendingUrl);
     };
   }, [pendingUrl]);
 
-  const canRotate = !!pendingFile && ROTATABLE.test(pendingFile.type);
+  const editorOpen = editingExisting || !!pendingFile;
+  const previewSrc = pendingFile ? pendingUrl : editingExisting ? value : null;
+
+  const canRotate = pendingFile
+    ? ROTATABLE.test(pendingFile.type)
+    : editingExisting
+      ? !/\.svg(\?|$)/i.test(value ?? '')
+      : false;
 
   function pick() {
     fileInput.current?.click();
@@ -101,13 +122,25 @@ export function ImageUploadField({
 
   function onPick(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    // Allow re-picking the same file next time.
-    if (fileInput.current) fileInput.current.value = '';
+    if (fileInput.current) fileInput.current.value = ''; // allow re-picking same file
     if (!file) return;
     setError(null);
     if (pendingUrl) URL.revokeObjectURL(pendingUrl);
+    setEditingExisting(false);
     setPendingFile(file);
     setPendingUrl(URL.createObjectURL(file));
+    setRotation(0);
+  }
+
+  // Open the editor on the currently-saved image (LinkedIn-style: click the
+  // photo to preview it big and rotate/replace it).
+  function editExisting() {
+    if (!value) return;
+    setError(null);
+    if (pendingUrl) URL.revokeObjectURL(pendingUrl);
+    setPendingFile(null);
+    setPendingUrl(null);
+    setEditingExisting(true);
     setRotation(0);
   }
 
@@ -118,22 +151,50 @@ export function ImageUploadField({
     setRotation((r) => (r + 90) % 360);
   }
 
-  function cancelPending() {
+  function closeEditor() {
     if (pendingUrl) URL.revokeObjectURL(pendingUrl);
     setPendingFile(null);
     setPendingUrl(null);
+    setEditingExisting(false);
     setRotation(0);
     setError(null);
   }
 
-  async function confirmUpload() {
-    if (!pendingFile) return;
-    setUploading(true);
+  async function confirm() {
     setError(null);
     try {
-      const blob = await rotatedBlob(pendingFile, rotation);
+      let blob: Blob | null = null;
+      let filename = 'image';
+
+      if (pendingFile) {
+        blob =
+          rotation % 360 === 0 || !ROTATABLE.test(pendingFile.type)
+            ? pendingFile
+            : await canvasRotate(
+                await loadImage(pendingUrl!),
+                rotation,
+                pendingFile.type,
+              );
+        filename = pendingFile.name || 'image';
+      } else if (editingExisting && value) {
+        // Nothing changed on the saved image — just close.
+        if (rotation % 360 === 0) {
+          closeEditor();
+          return;
+        }
+        const img = await loadImage(value, true); // crossOrigin for canvas export
+        blob = await canvasRotate(img, rotation, typeFromUrl(value));
+        filename = filenameFromUrl(value);
+      }
+
+      if (!blob) {
+        closeEditor();
+        return;
+      }
+
+      setUploading(true);
       const fd = new FormData();
-      fd.append('file', blob, pendingFile.name || 'image');
+      fd.append('file', blob, filename);
       fd.append('folder', folder);
       const res = await adminFetch<UploadResponse>(
         '/api/v1/admin/uploads',
@@ -142,9 +203,19 @@ export function ImageUploadField({
         logout,
       );
       onChange(res.url);
-      cancelPending();
+      closeEditor();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Yükləmə xətası');
+      // Most likely a cross-origin tainted canvas when rotating an existing
+      // image in a split-origin dev setup. Replacing with a new file still works.
+      const taint =
+        editingExisting && rotation % 360 !== 0 && !pendingFile;
+      setError(
+        taint
+          ? 'Mövcud şəkli fırlada bilmədik (fərqli origin). “Dəyiş” ilə yeni şəkil yükləyin.'
+          : err instanceof Error
+            ? err.message
+            : 'Yükləmə xətası',
+      );
     } finally {
       setUploading(false);
     }
@@ -152,7 +223,7 @@ export function ImageUploadField({
 
   function clear() {
     onChange('');
-    cancelPending();
+    closeEditor();
   }
 
   return (
@@ -172,19 +243,21 @@ export function ImageUploadField({
         style={{ display: 'none' }}
       />
 
-      {/* REVIEW STATE — a file is picked but not uploaded yet. */}
-      {pendingUrl ? (
+      {editorOpen ? (
+        /* EDITOR — reviewing a new pick OR the existing image. */
         <div className="admin-image-editor">
           <div
             className="admin-form-preview admin-image-editor-stage"
             aria-label="Önizləmə"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={pendingUrl}
-              alt="önizləmə"
-              style={{ transform: `rotate(${rotation}deg)` }}
-            />
+            {previewSrc && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={previewSrc}
+                alt="önizləmə"
+                style={{ transform: `rotate(${rotation}deg)` }}
+              />
+            )}
           </div>
 
           <div className="admin-image-editor-tools">
@@ -219,16 +292,20 @@ export function ImageUploadField({
             </button>
             <button
               type="button"
-              onClick={confirmUpload}
+              onClick={confirm}
               disabled={uploading || !token}
               className="admin-btn"
               style={{ padding: '4px 12px', fontSize: 12 }}
             >
-              {uploading ? 'Yüklənir…' : 'Təsdiqlə və yüklə'}
+              {uploading
+                ? 'Yüklənir…'
+                : editingExisting && !pendingFile
+                  ? 'Yadda saxla'
+                  : 'Təsdiqlə və yüklə'}
             </button>
             <button
               type="button"
-              onClick={cancelPending}
+              onClick={closeEditor}
               disabled={uploading}
               className="admin-btn admin-btn-ghost"
               style={{ padding: '4px 10px', fontSize: 12 }}
@@ -243,17 +320,17 @@ export function ImageUploadField({
           )}
         </div>
       ) : value ? (
-        /* COMMITTED STATE — an image is saved; allow replace or remove. */
+        /* COMMITTED — click the image (LinkedIn-style) to preview/edit it. */
         <>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <button
               type="button"
-              onClick={pick}
+              onClick={editExisting}
               disabled={uploading || !token}
               className="admin-btn admin-btn-ghost"
               style={{ padding: '4px 12px', fontSize: 12 }}
             >
-              Dəyiş
+              Önizlə / Redaktə et
             </button>
             <button
               type="button"
@@ -264,13 +341,19 @@ export function ImageUploadField({
               Sil
             </button>
           </div>
-          <div className="admin-form-preview">
+          <button
+            type="button"
+            onClick={editExisting}
+            className="admin-form-preview admin-image-thumb"
+            title="Önizlə / Redaktə et"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={value} alt="preview" />
-          </div>
+            <span className="admin-image-thumb-hint">Redaktə et</span>
+          </button>
         </>
       ) : (
-        /* EMPTY STATE — nothing selected yet. */
+        /* EMPTY */
         <button
           type="button"
           onClick={pick}

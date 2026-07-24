@@ -281,6 +281,33 @@
   margin-top: 8px;
 }
 
+/* Clickable committed thumbnail — hover reveals a "Redaktə et" overlay,
+   LinkedIn-style, so the saved image can be previewed/edited in place. */
+.admin-image-thumb {
+  position: relative;
+  cursor: pointer;
+  border: 1px dashed var(--line);
+  background: var(--bg-3);
+  padding: 16px;
+}
+.admin-image-thumb:hover { border-color: var(--gold); }
+.admin-image-thumb-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.admin-image-thumb:hover .admin-image-thumb-hint { opacity: 1; }
+
 .admin-form-actions {
   display: flex;
   gap: 12px;
