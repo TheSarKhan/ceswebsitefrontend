@@ -738,11 +738,10 @@
     aspect-ratio: 4 / 3;
     position: relative;
     border-bottom: 1px solid var(--line);
-    /* Product shots come in mixed aspect ratios (tall booms, wide trucks).
-       A white pad + object-fit: contain (set inline on the Image) keeps the
-       whole machine visible and every card identically framed, instead of
-       cover cropping/zooming tall images so they look oversized. */
-    background: #fff;
+    /* Fleet photos are 4:3 studio shots on a soft grey sweep. object-fit:
+       contain (set inline) fills the 4:3 frame; the grey pad matches the
+       backdrop so any sub-pixel edge blends instead of flashing white. */
+    background: #e7e9ec;
   }
   .card-a .badge {
     position: absolute;
@@ -1827,7 +1826,7 @@
     width: 100%;
     aspect-ratio: 4/3;
     object-fit: contain;
-    background: #fff;
+    background: #e7e9ec;
     display: block;
   }
   .rent-item-body { padding: 14px 16px 16px; }

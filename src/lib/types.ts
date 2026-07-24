@@ -43,6 +43,8 @@ export type FleetItemCard = {
   sortOrder: number;
   isPublished: boolean;
   translations: I18n<FleetItemTranslation>;
+  subcategorySlug?: string;
+  subcategoryName?: string;
 };
 
 export type SpecEntry = {
