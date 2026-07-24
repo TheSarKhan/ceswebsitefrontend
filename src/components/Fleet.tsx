@@ -144,7 +144,11 @@ export function Fleet({
           >
             {items.map((item) => (
               <StaggerItem key={item.slug}>
-                <FleetCard item={item} lang={lang} />
+                <FleetCard
+                  item={item}
+                  lang={lang}
+                  categoryName={pickTr(activeCategory?.translations, lang)?.name ?? null}
+                />
               </StaggerItem>
             ))}
           </StaggerGroup>
@@ -171,10 +175,18 @@ export function Fleet({
   );
 }
 
-function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
+function FleetCard({
+  item,
+  lang,
+  categoryName,
+}: {
+  item: FleetItemCard;
+  lang: Lang;
+  categoryName: string | null;
+}) {
   const tr = pickTr(item.translations, lang);
   const unit = formatUnit(item.priceUnit, lang);
-  const { setSelectedEquipment } = useOrder();
+  const { setSelectedOrder } = useOrder();
   const equipmentName = tr?.name ?? item.modelNumber ?? item.slug;
   const href = `/${lang.toLowerCase()}/texnika/${item.slug}`;
 
@@ -218,7 +230,7 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
           <a
             className="req"
             href="#contact"
-            onClick={() => setSelectedEquipment(equipmentName)}
+            onClick={() => setSelectedOrder({ name: equipmentName, category: categoryName })}
           >
             {lang === 'AZ' ? 'Sifariş et' : lang === 'RU' ? 'Заказать' : 'Order Now'} →
           </a>

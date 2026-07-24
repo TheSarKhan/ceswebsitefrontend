@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { Icon } from './icons';
 import { Reveal } from './motion';
 import { apiFetch, ApiError } from '@/lib/api';
 import { useOrder } from '@/contexts/OrderContext';
+import { useFleetCategories } from '@/lib/hooks';
+import { useLang } from '@/lib/lang';
+import { pickTr } from '@/lib/types';
+
+const OTHER_OPTION = 'Digər';
 
 type FormState = {
   name: string;
@@ -21,7 +26,7 @@ const EMPTY: FormState = {
   company: '',
   phone: '',
   email: '',
-  equipmentType: 'Avtokran',
+  equipmentType: '',
   duration: '1 gün',
   message: '',
 };
@@ -32,18 +37,35 @@ export function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { selectedEquipment, setSelectedEquipment } = useOrder();
+  const { selectedOrder, setSelectedOrder } = useOrder();
+  const { lang } = useLang();
+  const { data: fleetCategories } = useFleetCategories();
 
-  // A fleet-card "Sifariş et" click drops the item's name here — prefill the
-  // message field so the sales team knows which unit the lead is asking about.
+  // Localized category names for the equipment-type dropdown — fully dynamic
+  // so new admin categories appear here automatically.
+  const categoryNames = useMemo(() => {
+    const names = (fleetCategories ?? [])
+      .map((c) => pickTr(c.translations, lang)?.name)
+      .filter((n): n is string => !!n);
+    return Array.from(new Set(names));
+  }, [fleetCategories, lang]);
+
+  // A fleet-card "Sifariş et" click drops the item's name + category here —
+  // prefill the message field and pre-select the matching equipment type so the
+  // sales team knows exactly what the lead is asking about.
   useEffect(() => {
-    if (!selectedEquipment) return;
+    if (!selectedOrder) return;
+    const matchedType =
+      selectedOrder.category && categoryNames.includes(selectedOrder.category)
+        ? selectedOrder.category
+        : OTHER_OPTION;
     setForm((prev) => ({
       ...prev,
-      message: `Sifariş etmək istədiyim texnika: ${selectedEquipment}`,
+      equipmentType: matchedType,
+      message: `Sifariş etmək istədiyim texnika: ${selectedOrder.name}`,
     }));
-    setSelectedEquipment(null);
-  }, [selectedEquipment, setSelectedEquipment]);
+    setSelectedOrder(null);
+  }, [selectedOrder, setSelectedOrder, categoryNames]);
 
   const update = <K extends keyof FormState>(key: K) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -173,12 +195,11 @@ export function Contact() {
               <div className="form-field">
                 <label>Texnika növü</label>
                 <select value={form.equipmentType} onChange={update('equipmentType')}>
-                  <option>Avtokran</option>
-                  <option>Forklift</option>
-                  <option>Səbət</option>
-                  <option>Ekskavator</option>
-                  <option>Buldozer</option>
-                  <option>Digər / Bilinmir</option>
+                  <option value="">Seçin</option>
+                  {categoryNames.map((name) => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                  <option value={OTHER_OPTION}>{OTHER_OPTION}</option>
                 </select>
               </div>
               <div className="form-field">

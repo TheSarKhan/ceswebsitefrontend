@@ -2,18 +2,22 @@
 
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
+/** A "Sifariş et" click carries the unit name and its category (for prefilling
+ * the contact form's equipment-type dropdown). */
+export type OrderSelection = { name: string; category: string | null };
+
 type OrderContextValue = {
-  selectedEquipment: string | null;
-  setSelectedEquipment: (name: string | null) => void;
+  selectedOrder: OrderSelection | null;
+  setSelectedOrder: (order: OrderSelection | null) => void;
 };
 
 const OrderContext = createContext<OrderContextValue | null>(null);
 
 export function OrderProvider({ children }: { children: ReactNode }) {
-  const [selectedEquipment, setSelectedEquipment] = useState<string | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<OrderSelection | null>(null);
 
   return (
-    <OrderContext.Provider value={{ selectedEquipment, setSelectedEquipment }}>
+    <OrderContext.Provider value={{ selectedOrder, setSelectedOrder }}>
       {children}
     </OrderContext.Provider>
   );
