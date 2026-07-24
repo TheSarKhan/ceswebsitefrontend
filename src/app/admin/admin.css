@@ -255,6 +255,32 @@
 }
 .admin-form-preview img { max-height: 64px; max-width: 240px; object-fit: contain; }
 
+/* Image review/rotate panel (ImageUploadField). Bigger white stage so the
+   admin can see the machine and judge rotation before committing the upload. */
+.admin-image-editor { margin-top: 8px; }
+.admin-image-editor-stage {
+  width: 260px;
+  height: 195px; /* 4:3, matches the public card frame */
+  padding: 8px;
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.admin-image-editor-stage img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform .2s ease;
+}
+.admin-image-editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
 .admin-form-actions {
   display: flex;
   gap: 12px;
