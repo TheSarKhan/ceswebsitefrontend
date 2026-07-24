@@ -1680,3 +1680,75 @@
 }
 .admin-chip { padding: 4px 12px; font-size: 11px; }
 .admin-chip.active { border-color: var(--gold); color: var(--gold); }
+
+/* ── Drag-reorder tree (div-based subcategory/item rows + rail grips) ── */
+.admin-fleet-rail-card { align-items: center; }
+.admin-fleet-rail-grip {
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  padding: 8px 2px 8px 8px;
+  margin-right: -4px;
+}
+.admin-fleet-rail-grip:hover { background: transparent; color: var(--gold); }
+.admin-fleet-rail-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-3);
+  padding: 2px 12px 8px;
+}
+
+.admin-fleet-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.admin-fleet-list-hint { text-transform: none; letter-spacing: 0.02em; }
+
+.admin-fleet-list { display: flex; flex-direction: column; }
+.admin-fleet-sub {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.admin-fleet-sub.is-open { background: var(--bg-3); }
+.admin-fleet-sub-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 12px;
+}
+.admin-fleet-sub-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-fleet-items {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.admin-fleet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px 8px 26px;
+  border-top: 1px solid var(--line);
+}
+.admin-fleet-item-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+/* dense grip inside the tree rows */
+.admin-fleet-sub-head .admin-drag-handle,
+.admin-fleet-item .admin-drag-handle { padding: 4px; }
