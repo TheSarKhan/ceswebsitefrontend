@@ -1988,16 +1988,23 @@
   flex: 1 1 0;
   min-height: 0;
   overflow-y: auto;
-  margin: 4px 0 22px;
-  padding-right: 12px;
+  margin: 6px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg-2) 50%, transparent);
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-color: color-mix(in srgb, var(--gold) 60%, transparent) transparent;
 }
 .tx-desc-scroll p { color: var(--fg-2); font-size: 15.5px; line-height: 1.8; margin: 0 0 13px; }
 .tx-desc-scroll p:last-child { margin-bottom: 0; }
-.tx-desc-scroll::-webkit-scrollbar { width: 6px; }
-.tx-desc-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 3px; }
-.tx-desc-scroll::-webkit-scrollbar-track { background: transparent; }
+.tx-desc-scroll::-webkit-scrollbar { width: 8px; }
+.tx-desc-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 4px;
+}
+.tx-desc-scroll::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+.tx-desc-scroll::-webkit-scrollbar-track { background: transparent; margin: 4px 0; }
 /* buttons sit at the bottom of the info column, level with the image bottom */
 .tx-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
 @media (max-width: 860px) {
@@ -2047,7 +2054,7 @@
   .tx-page { padding: 0; }
   .tx-hero { grid-template-columns: 1fr 1fr; }
   /* let the full description print instead of being clipped by the scroll box */
-  .tx-desc-scroll { flex: none !important; max-height: none !important; overflow: visible !important; }
+  .tx-desc-scroll { flex: none !important; max-height: none !important; overflow: visible !important; border: 0 !important; background: none !important; padding: 0 !important; }
   body { background: #fff; color: #000; }
   .tx-title, .tx-specs td, .tx-desc p, .tx-desc-scroll p { color: #000; }
 }
