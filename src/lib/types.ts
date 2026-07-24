@@ -83,12 +83,14 @@ export type ProjectTranslation = {
   title: string;
   category?: string | null;
   meta?: string | null;
+  description?: string | null;
 };
 
 export type ProjectDto = {
   slug: string;
   year?: string | null;
   image?: string | null;
+  gallery?: string[] | null;
   sortOrder: number;
   translations: I18n<ProjectTranslation>;
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Placeholder } from './Hero';
 import { useLang } from '@/lib/lang';
 import { useProjects } from '@/lib/hooks';
@@ -32,26 +33,29 @@ export function Projects({
         <StaggerGroup className="projects-grid" stagger={0.07}>
           {projects.map((p) => {
             const tr = pickTr(p.translations, lang);
+            const href = `/${lang.toLowerCase()}/layihe/${p.slug}`;
             return (
               <StaggerItem key={p.slug} className="project">
-                <div className="img-fill">
-                  {p.image ? (
-                    <Image
-                      src={p.image}
-                      alt={tr?.title ?? p.slug}
-                      fill
-                      sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  ) : (
-                    <Placeholder label={tr?.category?.toUpperCase() ?? ''} />
-                  )}
-                </div>
-                <div className="project-overlay">
-                  <div className="cat">{tr?.category}</div>
-                  <h4>{tr?.title}</h4>
-                  <div className="meta">{tr?.meta}</div>
-                </div>
+                <Link href={href} className="project-link" aria-label={tr?.title ?? p.slug}>
+                  <div className="img-fill">
+                    {p.image ? (
+                      <Image
+                        src={p.image}
+                        alt={tr?.title ?? p.slug}
+                        fill
+                        sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        style={{ objectFit: 'contain' }}
+                      />
+                    ) : (
+                      <Placeholder label={tr?.category?.toUpperCase() ?? ''} />
+                    )}
+                  </div>
+                  <div className="project-overlay">
+                    <div className="cat">{tr?.category}</div>
+                    <h4>{tr?.title}</h4>
+                    <div className="meta">{tr?.meta}</div>
+                  </div>
+                </Link>
               </StaggerItem>
             );
           })}

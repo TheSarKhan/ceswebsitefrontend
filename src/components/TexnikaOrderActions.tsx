@@ -67,16 +67,42 @@ const L = {
   },
 } as const;
 
+// Project-mode overrides (used on /layihe detail pages).
+const P = {
+  AZ: {
+    order: 'Bizimlə əlaqə',
+    whatsapp: 'WhatsApp ilə yaz',
+    modalTitle: 'Sorğu',
+    waMsg: (n: string) => `Salam, "${n}" layihəsi haqqında məlumat almaq istəyirəm.`,
+  },
+  RU: {
+    order: 'Связаться с нами',
+    whatsapp: 'Написать в WhatsApp',
+    modalTitle: 'Запрос',
+    waMsg: (n: string) => `Здравствуйте, хочу узнать о проекте «${n}».`,
+  },
+  EN: {
+    order: 'Contact us',
+    whatsapp: 'Message on WhatsApp',
+    modalTitle: 'Enquiry',
+    waMsg: (n: string) => `Hello, I would like to know more about the "${n}" project.`,
+  },
+} as const;
+
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function TexnikaOrderActions({
   equipmentName,
   lang,
+  mode = 'equipment',
 }: {
   equipmentName: string;
   lang: Lang;
+  mode?: 'equipment' | 'project';
 }) {
-  const t = L[lang];
+  const base = L[lang];
+  const isProject = mode === 'project';
+  const t = isProject ? { ...base, ...P[lang] } : base;
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -104,7 +130,7 @@ export function TexnikaOrderActions({
           email: form.email || null,
           phone: form.phone,
           company: form.company || null,
-          equipmentType: equipmentName,
+          equipmentType: isProject ? `Layihə: ${equipmentName}` : equipmentName,
           duration: form.duration || null,
           location: null,
           message: form.message || null,

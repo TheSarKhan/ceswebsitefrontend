@@ -2058,3 +2058,6 @@
   body { background: #fff; color: #000; }
   .tx-title, .tx-specs td, .tx-desc p, .tx-desc-scroll p { color: #000; }
 }
+
+/* Project cards link to their detail page */
+.project-link { display: block; height: 100%; color: inherit; text-decoration: none; }

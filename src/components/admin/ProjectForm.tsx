@@ -7,14 +7,15 @@ import { ApiError } from '@/lib/api';
 import type { ProjectDto } from '@/lib/types';
 import { TranslationsBlock, type LangCode } from './TranslationsBlock';
 import { ImageUploadField } from './ImageUploadField';
+import { MultiImageField } from './MultiImageField';
 import { useToast } from './ToastProvider';
 
 type Translations = Record<LangCode, Record<string, string>>;
 
 const EMPTY_TR: Translations = {
-  az: { title: '', category: '', meta: '' },
-  ru: { title: '', category: '', meta: '' },
-  en: { title: '', category: '', meta: '' },
+  az: { title: '', category: '', meta: '', description: '' },
+  ru: { title: '', category: '', meta: '', description: '' },
+  en: { title: '', category: '', meta: '', description: '' },
 };
 
 type Props = {
@@ -31,6 +32,7 @@ export function ProjectForm({ initial, onSaved, onCancel }: Props) {
 
   const [year, setYear] = useState(initial?.year ?? '');
   const [image, setImage] = useState(initial?.image ?? '');
+  const [gallery, setGallery] = useState<string[]>(initial?.gallery ?? []);
   const [sortOrder, setSortOrder] = useState<number>(initial?.sortOrder ?? 0);
   const [isPublished, setIsPublished] = useState<boolean>(true);
   const [tr, setTr] = useState<Translations>(() => {
@@ -40,16 +42,19 @@ export function ProjectForm({ initial, onSaved, onCancel }: Props) {
         title: initial.translations?.az?.title ?? '',
         category: initial.translations?.az?.category ?? '',
         meta: initial.translations?.az?.meta ?? '',
+        description: initial.translations?.az?.description ?? '',
       },
       ru: {
         title: initial.translations?.ru?.title ?? '',
         category: initial.translations?.ru?.category ?? '',
         meta: initial.translations?.ru?.meta ?? '',
+        description: initial.translations?.ru?.description ?? '',
       },
       en: {
         title: initial.translations?.en?.title ?? '',
         category: initial.translations?.en?.category ?? '',
         meta: initial.translations?.en?.meta ?? '',
+        description: initial.translations?.en?.description ?? '',
       },
     };
   });
@@ -61,12 +66,13 @@ export function ProjectForm({ initial, onSaved, onCancel }: Props) {
       const body = JSON.stringify({
         year: year || null,
         image: image || null,
+        gallery,
         sortOrder,
         isPublished,
         translations: {
-          az: { title: tr.az.title, category: tr.az.category || null, meta: tr.az.meta || null },
-          ru: { title: tr.ru.title, category: tr.ru.category || null, meta: tr.ru.meta || null },
-          en: { title: tr.en.title, category: tr.en.category || null, meta: tr.en.meta || null },
+          az: { title: tr.az.title, category: tr.az.category || null, meta: tr.az.meta || null, description: tr.az.description || null },
+          ru: { title: tr.ru.title, category: tr.ru.category || null, meta: tr.ru.meta || null, description: tr.ru.description || null },
+          en: { title: tr.en.title, category: tr.en.category || null, meta: tr.en.meta || null, description: tr.en.description || null },
         },
       });
       return adminFetch<ProjectDto>(path, token, { method: isEdit ? 'PUT' : 'POST', body }, logout);
@@ -103,6 +109,14 @@ export function ProjectForm({ initial, onSaved, onCancel }: Props) {
         label="Əsas şəkil"
       />
 
+      <MultiImageField
+        value={gallery}
+        onChange={setGallery}
+        folder="projects"
+        label="Qalereya (əlavə şəkillər)"
+        hint="Detal səhifəsində əsas şəkildən sonra göstərilir"
+      />
+
       <div className="admin-field">
         <label>Sıra</label>
         <input type="number" value={sortOrder} onChange={(e) => setSortOrder(Number(e.target.value))} />
@@ -124,6 +138,14 @@ export function ProjectForm({ initial, onSaved, onCancel }: Props) {
           { name: 'title', label: 'Layihə adı', required: true, maxLength: 256 },
           { name: 'category', label: 'Kateqoriya', maxLength: 128 },
           { name: 'meta', label: 'Meta (məs. 12 ay · 15 kran)', maxLength: 256 },
+          {
+            name: 'description',
+            label: 'Haqqında (ətraflı təsvir)',
+            hint: 'Layihənin detal səhifəsində göstərilir. Abzasları boş sətirlə ayırın.',
+            type: 'textarea',
+            maxLength: 4000,
+            rows: 10,
+          },
         ]}
       />
 
