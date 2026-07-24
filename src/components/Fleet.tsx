@@ -186,16 +186,13 @@ function FleetCard({ item, lang }: { item: FleetItemCard; lang: Lang }) {
             alt={tr?.name ?? item.modelNumber ?? item.slug}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'contain' }}
           />
         ) : (
           <Placeholder label={item.modelNumber ?? item.slug} />
         )}
       </div>
       <div className="body">
-        {item.modelNumber && (
-          <div className="cat">{item.modelNumber}</div>
-        )}
         <h4>{tr?.name}</h4>
         {tr?.description && <p className="card-desc">{tr.description}</p>}
         <div className="foot">

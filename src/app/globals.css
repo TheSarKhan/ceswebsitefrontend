@@ -721,6 +721,11 @@
     aspect-ratio: 4 / 3;
     position: relative;
     border-bottom: 1px solid var(--line);
+    /* Product shots come in mixed aspect ratios (tall booms, wide trucks).
+       A white pad + object-fit: contain (set inline on the Image) keeps the
+       whole machine visible and every card identically framed, instead of
+       cover cropping/zooming tall images so they look oversized. */
+    background: #fff;
   }
   .card-a .badge {
     position: absolute;
@@ -1791,7 +1796,8 @@
   .rent-item-img {
     width: 100%;
     aspect-ratio: 4/3;
-    object-fit: cover;
+    object-fit: contain;
+    background: #fff;
     display: block;
   }
   .rent-item-body { padding: 14px 16px 16px; }

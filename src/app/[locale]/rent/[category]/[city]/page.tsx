@@ -216,9 +216,6 @@ export default async function RentalPage({
                         />
                       )}
                       <div className="rent-item-body">
-                        {it.modelNumber && (
-                          <div className="rent-item-model">{it.modelNumber}</div>
-                        )}
                         <h3>{itTr?.name ?? it.slug}</h3>
                         {it.price && (
                           <div className="rent-item-price">
