@@ -3,7 +3,6 @@ import { SiteHeader } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { Fleet } from '@/components/Fleet';
-import { Stats } from '@/components/Stats';
 import { HowItWorks } from '@/components/HowItWorks';
 import { WhyUs } from '@/components/WhyUs';
 import { Projects } from '@/components/Projects';
@@ -78,7 +77,6 @@ export default async function HomePage({
       <Hero />
       <Services initialOfferings={offerings ?? undefined} />
       <Fleet initialCategories={categories ?? undefined} />
-      <Stats />
       <HowItWorks />
       <WhyUs />
       <Projects initialProjects={projects ?? undefined} />
