@@ -42,7 +42,7 @@ jobs:
             tar xzf /tmp/cesweb-frontend-src.tgz -C /opt/cesweb/ces-frontend
             rm -f /tmp/cesweb-frontend-src.tgz
             cd /opt/cesweb
-            docker compose --env-file .env.cesweb -f docker-compose.cesweb.yml up -d --build frontend
+            docker compose --env-file .env.cesweb -f docker-compose.cesweb.yml up -d --build --no-deps frontend
             docker image prune -f
           '
 
