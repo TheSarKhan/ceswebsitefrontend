@@ -44,9 +44,8 @@ export function Footer() {
         <div className="footer-bottom">
           <div>© 2020—2026 CES MMC · {t.footer_copy}</div>
           <div className="links">
-            <a href="#">{lang === 'AZ' ? 'Məxfilik' : lang === 'RU' ? 'Конфиденциальность' : 'Privacy'}</a>
-            <a href="#">{lang === 'AZ' ? 'Şərtlər' : lang === 'RU' ? 'Условия' : 'Terms'}</a>
-            <a href="#">Cookies</a>
+            <a href={`/${locale}/mexfilik`}>{lang === 'AZ' ? 'Məxfilik' : lang === 'RU' ? 'Конфиденциальность' : 'Privacy'}</a>
+            <a href={`/${locale}/sertler`}>{lang === 'AZ' ? 'İstifadə şərtləri' : lang === 'RU' ? 'Условия использования' : 'Terms of Use'}</a>
           </div>
         </div>
       </div>

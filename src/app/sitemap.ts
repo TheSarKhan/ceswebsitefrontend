@@ -67,14 +67,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Same for projects — anchored under the projects section.
+  // Project detail pages.
   for (const project of projects ?? []) {
     for (const lang of routing.locales) {
+      const path = `/layihe/${project.slug}`;
       entries.push({
-        url: `${localeUrl(lang)}#project-${project.slug}`,
+        url: localeUrl(lang, path),
         lastModified: now,
         changeFrequency: 'monthly',
         priority: 0.5,
+        alternates: { languages: alternatesFor(path) },
+      });
+    }
+  }
+
+  // Legal pages.
+  for (const path of ['/mexfilik', '/sertler']) {
+    for (const lang of routing.locales) {
+      entries.push({
+        url: localeUrl(lang, path),
+        lastModified: now,
+        changeFrequency: 'yearly',
+        priority: 0.3,
+        alternates: { languages: alternatesFor(path) },
       });
     }
   }
