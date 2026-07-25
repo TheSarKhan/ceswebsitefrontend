@@ -87,29 +87,6 @@ export function WhyUs() {
             <div className="why-visual-logo">
               <Logo size={480} />
             </div>
-            <div className="quote-overlay">
-              <div className="q">
-                &ldquo;
-                {lang === 'AZ'
-                  ? 'Vaxt — ən bahalı ehtiyyatdır.'
-                  : lang === 'RU'
-                    ? 'Время — самый дорогой ресурс.'
-                    : 'Time is the most expensive resource.'}
-                &rdquo;
-              </div>
-              <div
-                className="mono"
-                style={{ fontSize: 11, color: 'var(--fg-2)', letterSpacing: '0.1em' }}
-              >
-                — CES{' '}
-                {lang === 'AZ'
-                  ? 'İş prinsipi'
-                  : lang === 'RU'
-                    ? 'Принцип работы'
-                    : 'Workflow Principle'}{' '}
-                №01
-              </div>
-            </div>
           </Reveal>
         </div>
       </div>
