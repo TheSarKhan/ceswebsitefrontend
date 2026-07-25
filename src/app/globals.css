@@ -132,8 +132,8 @@
     white-space: nowrap;
   }
   .btn:hover { transform: translateY(-1px); }
-  .btn-primary { background: var(--gold); color: #0B0B0C; }
-  .btn-primary:hover { background: var(--gold-2); }
+  .btn-primary { background: var(--gold); color: #fff; }
+  .btn-primary:hover { background: var(--gold-2); color: #fff; }
   .btn-ghost { border-color: var(--line-strong); color: var(--fg); }
   .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
   .btn-arrow svg { transition: transform .18s ease; }
@@ -1508,7 +1508,7 @@
   .request-toggle button:hover { color: var(--fg); }
   .request-toggle button.active {
     background: var(--gold);
-    color: #0B0B0C;
+    color: #fff;
   }
   .form-grid {
     display: grid;

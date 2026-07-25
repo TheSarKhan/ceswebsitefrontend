@@ -182,10 +182,10 @@
 
 .admin-btn-primary {
   background: var(--gold);
-  color: #000;
+  color: #fff;
   border-color: var(--gold);
 }
-.admin-btn-primary:hover { background: var(--gold-2); border-color: var(--gold-2); color: #000; }
+.admin-btn-primary:hover { background: var(--gold-2); border-color: var(--gold-2); color: #fff; }
 
 .admin-btn-ghost {}
 
