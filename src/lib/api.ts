@@ -6,7 +6,7 @@
  * surface errors via {@code isError} / {@code error}.
  */
 // Browser-facing base — inlined into the client bundle at build time. In prod
-// this is the public origin (e.g. https://ces.sarkhan.online) and the reverse
+// this is the public origin (e.g. https://ces.sarkhan.az) and the reverse
 // proxy forwards /api, /uploads to the backend.
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, '') ??

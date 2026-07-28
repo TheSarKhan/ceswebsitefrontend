@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useFleetCategories, useFleetSubcategory } from '@/lib/hooks';
 import { pickTr, type FleetCategoryDto } from '@/lib/types';
 import { useLang } from '@/lib/lang';
@@ -7,24 +8,33 @@ import { type Lang } from '@/lib/translations';
 import { FleetCard } from './Fleet';
 import { Reveal } from './motion';
 
-const T: Record<Lang, { title: string; lead: string; jump: string; empty: string }> = {
+const T: Record<
+  Lang,
+  { title: string; lead: string; jump: string; empty: string; home: string; crumb: string }
+> = {
   AZ: {
     title: 'Texnika Kataloqu',
     lead: 'Bütün texnika parkımız — kateqoriyalar üzrə. İstənilən modeli seçib operatorla icarə edin.',
     jump: 'Keçidlər',
     empty: 'Hələ texnika əlavə olunmayıb.',
+    home: 'Ana səhifə',
+    crumb: 'Kataloq',
   },
   RU: {
     title: 'Каталог Техники',
     lead: 'Весь наш парк техники — по категориям. Выберите модель и арендуйте с оператором.',
     jump: 'Разделы',
     empty: 'Техника пока не добавлена.',
+    home: 'Главная',
+    crumb: 'Каталог',
   },
   EN: {
     title: 'Equipment Catalog',
     lead: 'Our full equipment fleet — grouped by category. Pick a model and rent it with an operator.',
     jump: 'Sections',
     empty: 'No equipment added yet.',
+    home: 'Home',
+    crumb: 'Catalog',
   },
 };
 
@@ -71,8 +81,14 @@ export function CatalogFull({
       : data.filter((c) => c.subcategories.some((s) => (s.itemCount ?? 0) > 0));
 
   return (
-    <section className="section-pad catalog">
+    <section className="catalog">
       <div className="container">
+        <nav className="tx-crumbs catalog-crumbs" aria-label="breadcrumb">
+          <Link href={`/${lang.toLowerCase()}`}>{t.home}</Link>
+          <span className="tx-crumbs-sep">/</span>
+          <span className="tx-crumbs-current">{t.crumb}</span>
+        </nav>
+
         <Reveal className="catalog-head">
           <h1>{t.title}</h1>
           <p>{t.lead}</p>
