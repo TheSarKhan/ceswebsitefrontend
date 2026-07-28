@@ -209,6 +209,14 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+  /* Light theme's opaque .nav rule outranks .nav--transparent, so restore the
+     transparent hero nav here (scrolled/menu-open states below re-add the fill). */
+  [data-theme="light"] .nav--transparent {
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
   .nav--transparent.scrolled {
     background: rgba(11, 11, 12, 0.92);
     backdrop-filter: blur(12px);
