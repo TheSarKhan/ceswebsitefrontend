@@ -2187,3 +2187,84 @@
 
 /* Project cards link to their detail page */
 .project-link { display: block; height: 100%; color: inherit; text-decoration: none; }
+
+/* ===== CATALOG PAGE (/kataloq) ===== */
+.catalog-head h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  font-size: clamp(30px, 5vw, 64px);
+}
+.catalog-head p { color: var(--fg-2); margin-top: 12px; max-width: 62ch; line-height: 1.6; }
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 48px;
+  margin-top: 40px;
+  align-items: start;
+}
+.catalog-nav {
+  position: sticky;
+  top: calc(var(--header-h, 132px) + 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.catalog-nav-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 10px;
+}
+.catalog-nav a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  padding: 7px 0 7px 12px;
+  border-left: 2px solid var(--line);
+  transition: color .15s ease, border-color .15s ease;
+}
+.catalog-nav a:hover { color: var(--gold); border-color: var(--gold); }
+.catalog-cat {
+  scroll-margin-top: calc(var(--header-h, 132px) + 20px);
+  margin-bottom: 56px;
+}
+.catalog-cat:last-child { margin-bottom: 0; }
+.catalog-cat-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(22px, 3vw, 36px);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.catalog-sub { margin-bottom: 30px; }
+.catalog-sub:last-child { margin-bottom: 0; }
+.catalog-sub-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+@media (max-width: 900px) {
+  .catalog-layout { grid-template-columns: 1fr; gap: 24px; }
+  .catalog-nav {
+    position: static;
+    flex-flow: row wrap;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .catalog-nav-label { width: 100%; margin-bottom: 4px; }
+  .catalog-nav a { border-left: 0; border: 1px solid var(--line); padding: 8px 12px; }
+}

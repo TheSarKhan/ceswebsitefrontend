@@ -165,17 +165,17 @@ export function Fleet({
         )}
 
         <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-          <a href="#contact" className="btn btn-ghost btn-arrow">
+          <Link href={`/${lang.toLowerCase()}/kataloq`} className="btn btn-ghost btn-arrow">
             {t.fleet_btn}
             <Icon name="arrow-right" size={14} stroke={2.5} />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-function FleetCard({
+export function FleetCard({
   item,
   lang,
   categoryName,
