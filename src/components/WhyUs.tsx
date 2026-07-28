@@ -1,7 +1,7 @@
 'use client';
 
+import Image from 'next/image';
 import { Icon } from './icons';
-import { Logo } from './Header';
 import { useLang } from '@/lib/lang';
 import { TRANSLATIONS } from '@/lib/translations';
 import { Reveal, StaggerGroup, StaggerItem } from './motion';
@@ -85,7 +85,14 @@ export function WhyUs() {
 
           <Reveal className="why-visual" delay={0.15}>
             <div className="why-visual-logo">
-              <Logo size={480} />
+              {/* Dark showcase panel → always the white wordmark, both themes. */}
+              <Image
+                src="/assets/logo2.png"
+                alt="Construction Equipment Services"
+                width={480}
+                height={480}
+                style={{ width: '74%', height: 'auto', objectFit: 'contain' }}
+              />
             </div>
           </Reveal>
         </div>

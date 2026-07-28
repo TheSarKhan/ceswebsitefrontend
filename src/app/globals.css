@@ -1094,7 +1094,8 @@
   .why-visual {
     position: relative;
     border: 1px solid var(--line);
-    background: var(--bg-2);
+    /* Dark showcase card in both themes so the white wordmark stands out. */
+    background: #121214;
     /* Match the height of the list column instead of forcing a tall portrait. */
     height: 100%;
     min-height: 420px;
