@@ -571,7 +571,9 @@
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
-  .section-head h2 .stroke { -webkit-text-stroke: 1.2px var(--fg); color: transparent; }
+  /* Second line as a solid gold accent — same font/weight as the first line,
+     reads as one cohesive heading instead of an outlined "different font". */
+  .section-head h2 .stroke { color: var(--gold); -webkit-text-stroke: 0; }
 
   /* ===== SERVICES ===== */
   .services-grid {
@@ -1098,7 +1100,7 @@
     justify-content: center;
     background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 70%);
   }
-  .why-visual-logo img { opacity: 0.92; max-width: 70%; height: auto; }
+  .why-visual-logo img { opacity: 1; max-width: 74%; height: auto; }
   .why-visual .badge-overlay {
     position: absolute; top: 20px; left: 20px;
     z-index: 2;
@@ -1162,12 +1164,12 @@
     /* keep the logo clear of the dark caption gradient at the bottom */
     padding-bottom: clamp(64px, 14%, 96px);
   }
+  /* Solid caption bar instead of a harsh dark gradient over the white logo. */
   .project-overlay {
     position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 24px;
-    background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0));
-    transform: translateY(0);
-    transition: transform .3s ease;
+    padding: 16px 20px;
+    background: #111214;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .project-overlay .cat {
     font-family: var(--font-mono);
@@ -1308,7 +1310,7 @@
     cursor: pointer;
     transition: background .2s ease;
   }
-  .faq:hover { background: var(--bg-2); }
+  /* No row fill on hover — feedback lives on the toggle instead. */
   .faq summary {
     list-style: none;
     padding: 22px 0;
@@ -1325,14 +1327,28 @@
     letter-spacing: -0.01em;
   }
   .faq .toggle {
+    position: relative;
     width: 32px; height: 32px;
     border: 1px solid var(--line-strong);
-    color: var(--fg-2);
-    display: flex; align-items: center; justify-content: center;
-    transition: all .2s ease;
-    font-size: 18px;
+    flex-shrink: 0;
+    transition: background .2s ease, border-color .2s ease;
   }
-  .faq[open] .toggle { background: var(--gold); color: #000; border-color: var(--gold); transform: rotate(45deg); }
+  /* Draw + / − with two bars so the square never rotates into a diamond. */
+  .faq .toggle::before,
+  .faq .toggle::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    width: 12px; height: 2px;
+    background: var(--fg-2);
+    transform: translate(-50%, -50%);
+    transition: opacity .2s ease, background .2s ease;
+  }
+  .faq .toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .faq:hover .toggle { border-color: var(--gold); }
+  .faq:hover .toggle::before, .faq:hover .toggle::after { background: var(--gold); }
+  .faq[open] .toggle { background: var(--gold); border-color: var(--gold); }
+  .faq[open] .toggle::before, .faq[open] .toggle::after { background: #000; }
+  .faq[open] .toggle::after { opacity: 0; }   /* plus collapses to a minus */
   .faq .a {
     padding: 0 0 32px 0;
     font-size: 15px;
@@ -1760,8 +1776,8 @@
     will-change: transform;
   }
   .card-a:hover, .project:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px -14px rgba(0, 0, 0, 0.2);
   }
   .testimonial { transition: transform .35s cubic-bezier(0.22, 1, 0.36, 1), border-color .25s ease; }
   .testimonial:hover { transform: translateY(-3px); border-color: var(--line-strong); }

@@ -31,7 +31,7 @@ export function FAQ({
                 <details className="faq">
                   <summary>
                     <span className="q">{tr?.question}</span>
-                    <span className="toggle">+</span>
+                    <span className="toggle" aria-hidden="true" />
                   </summary>
                   <div className="a">{tr?.answer}</div>
                 </details>
