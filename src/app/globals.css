@@ -2261,11 +2261,12 @@
 .catalog-sub { margin-bottom: 30px; }
 .catalog-sub:last-child { margin-bottom: 0; }
 .catalog-sub-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--fg-2);
   margin-bottom: 14px;
 }
 @media (max-width: 900px) {
