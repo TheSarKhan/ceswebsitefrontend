@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Icon } from './icons';
 import { useLang } from '@/lib/lang';
@@ -106,10 +107,10 @@ export function Hero() {
               {t.hero_sub}
             </motion.p>
             <motion.div className="hero-actions" variants={heroItem}>
-              <a href="#fleet" className="btn btn-primary btn-arrow">
+              <Link href={`/${lang.toLowerCase()}/kataloq`} className="btn btn-primary btn-arrow">
                 {t.hero_btn1}
                 <Icon name="arrow-right" size={14} stroke={2.5} />
-              </a>
+              </Link>
               <a href="#contact" className="btn btn-ghost">
                 {t.hero_btn2}
               </a>
