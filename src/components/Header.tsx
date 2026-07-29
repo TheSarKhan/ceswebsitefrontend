@@ -146,15 +146,13 @@ export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
           </button>
           <a
             href={anchor('contact')}
-            className="btn btn-ghost hide-mobile"
-            style={{ padding: '10px 16px', fontSize: 12 }}
+            className="btn btn-ghost nav-cta-btn hide-mobile"
           >
             {t.nav_order}
           </a>
           <a
             href="tel:+994506829080"
-            className="btn btn-primary"
-            style={{ padding: '10px 16px', fontSize: 12 }}
+            className="btn btn-primary nav-cta-btn"
           >
             <Icon name="phone" size={14} stroke={2} />
             <span className="hide-sm">{t.nav_call}</span>
