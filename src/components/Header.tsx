@@ -67,12 +67,9 @@ export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
   const anchor = (id: string) => `/${locale}#${id}`;
 
   const links: { href: string; label: string }[] = [
-    { href: anchor('fleet'),    label: t.nav_fleet },
-    { href: anchor('services'), label: t.nav_services },
-    { href: anchor('how'),      label: t.nav_how },
-    { href: anchor('projects'), label: t.nav_projects },
-    { href: anchor('faq'),      label: t.nav_faq },
-    { href: anchor('contact'),  label: t.nav_contact },
+    { href: `/${locale}/layiheler`, label: t.nav_our_projects },
+    { href: `/${locale}/kataloq`,   label: t.nav_our_fleet },
+    { href: anchor('contact'),      label: t.nav_contact },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);

@@ -67,6 +67,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  // Projects index page.
+  for (const lang of routing.locales) {
+    entries.push({
+      url: localeUrl(lang, '/layiheler'),
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+      alternates: { languages: alternatesFor('/layiheler') },
+    });
+  }
+
   // Project detail pages.
   for (const project of projects ?? []) {
     for (const lang of routing.locales) {
