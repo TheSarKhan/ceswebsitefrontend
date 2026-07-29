@@ -432,17 +432,6 @@
   }
 
 
-  /* editorial accent */
-  .hero-accent-top {
-    position: absolute;
-    top: var(--header-h, 132px);
-    left: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-    z-index: 2;
-    pointer-events: none;
-  }
-
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 12px;
     padding: 8px 14px;

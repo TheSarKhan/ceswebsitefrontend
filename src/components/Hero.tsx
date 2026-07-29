@@ -84,14 +84,6 @@ export function Hero() {
       <div className="hero-grid grid-bg"></div>
       <div className="hero-glow" aria-hidden="true"></div>
 
-      <motion.span
-        className="hero-accent-top"
-        initial={{ width: 0 }}
-        animate={{ width: '46%' }}
-        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        aria-hidden="true"
-      />
-
       <motion.div
         className="container hero-inner"
         variants={heroContainer}
