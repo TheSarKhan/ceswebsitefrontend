@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'stevensoncrane.com' },
       // Hardcoded so dev builds (where NEXT_PUBLIC_API_BASE_URL is usually
       // unset/localhost) can still render uploads served from prod data.
+      { protocol: 'https', hostname: 'ces.com.az' },
       { protocol: 'https', hostname: 'ces.sarkhan.az' },
       ...(apiPattern ? [apiPattern] : []),
     ],
